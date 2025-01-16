@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter Tight", serif;
+  box-sizing: border-box;
+
+
+}
+
+.anton-sc-regular {
+  font-family: "Anton SC", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.new-amsterdam-regular {
+  font-family: "New Amsterdam", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.playwrite-nz-p {
+  font-family: "Playwrite NZ", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.oleo-script-regular {
+  font-family: "Oleo Script", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.oleo-script-bold {
+  font-family: "Oleo Script", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.inter-tight-t {
+  font-family: "Inter Tight", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.open-sans-youtube {
+  font-family: "Open Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid rgb(131, 131, 171);
+}
+
+input{
+  font-size: 90%;
+}
