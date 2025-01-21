@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
+
 function Content() {
     return (
-        <>
+        <> <Link to='/watch'>
             <div className="p-2">
                 <div>
                     <img className="rounded-xl" src="https://i.ytimg.com/vi/5S0g6GAcMdg/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDebApfOiNGQrp_wx7MD3_CnPjYTw" alt="" />
@@ -20,6 +22,7 @@ function Content() {
                 </div>
 
             </div>
+            </Link>
         </>
     )
 }
