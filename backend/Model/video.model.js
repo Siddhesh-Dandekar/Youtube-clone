@@ -5,6 +5,10 @@ const videoSchema = mongoose.Schema({
         type: String,
         required : true,
     },
+    videoUrl: {
+        type: String, 
+        required : true
+    },
     thumbnailUrl: {
         type: String, 
         required : true
@@ -14,10 +18,11 @@ const videoSchema = mongoose.Schema({
         required : true
     },
     channelId : {
-        type : String,
-        required : true
+        type: mongoose.Schema.Types.ObjectId, // Change this to ObjectId
+        ref: 'channels', // Reference to the `channels` model
+        required: true
     },
-    uploader:{
+    userId:{
         type: String,
         requied : true,
     },
@@ -39,9 +44,19 @@ const videoSchema = mongoose.Schema({
     },
     comments:[
         {
-            userid:String,
-            text: String,
-            timestamp : String
+            userid: {
+                type: String,
+                required: true
+            },
+            text: {
+                type: String,
+                required: true
+            },
+            timestamp: {
+                type: Date,
+                required: true,
+                default: Date.now
+            }
         }
     ]
 })

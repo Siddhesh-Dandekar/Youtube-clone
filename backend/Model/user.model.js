@@ -15,9 +15,14 @@ const userSchema = mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: 'https://cdn.mos.cms.futurecdn.net/7auVjCELrhFKTPfudXRTgc-1200-80.jpg'
+        default: 'https://yt3.ggpht.com/RAnCvom2Cnxn5g5xe1Vz5T4S9167TWv18cz2MTUu1hXv_tNZ-h2b34RoWPQqtAhvwXdgDijE=s108-c-k-c0x00ffffff-no-rj'
     },
-    channels: Array
+    channelId: {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'channels',
+        default : null,
+        unique:true
+    }
 })
 
 const userModel = mongoose.model('users', userSchema);

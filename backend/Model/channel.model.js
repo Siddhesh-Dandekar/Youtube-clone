@@ -14,7 +14,12 @@ const channelSchema = mongoose.Schema({
     },
     description: {
         type : String,
-        default : "",
+        default : "More about this channel...",
+    },
+    channelProfile:{
+        type: String,
+        required:false,
+        default : "https://yt3.ggpht.com/RAnCvom2Cnxn5g5xe1Vz5T4S9167TWv18cz2MTUu1hXv_tNZ-h2b34RoWPQqtAhvwXdgDijE=s108-c-k-c0x00ffffff-no-rj" 
     },
     channelBanner: {
         type: String,

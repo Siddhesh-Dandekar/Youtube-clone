@@ -1,8 +1,24 @@
 import Content from "./content";
 import { useSelector } from "react-redux";
+import { useState, useEffect} from 'react'
 
 function Body() {
-    const visiblestatus = useSelector(x => x.sidebar)
+    const visiblestatus = useSelector(x => x.sidebar);
+
+    const [ videoData, setVideoData] = useState([]);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            const videosInfo = await fetch('http://localhost:5100/videos').then(data => data.json());
+            if(videosInfo){
+                setVideoData(videosInfo);
+            }
+        }
+        fetchVideos();
+        console.log(videoData)
+    },[]);
+
+
     return (
         <>
             <main className="flex w-full pt-14 ">
@@ -101,18 +117,7 @@ function Body() {
                     </div>
                     <div className="mt-12" >
                         <div id='maincontent' className={`${visiblestatus.visible ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 blureffect' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`} >
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
-                            <Content />
+                            {videoData.map(x => <Content key={x._id} data={x} /> )}
                         </div>
                     </div>
                 </div>

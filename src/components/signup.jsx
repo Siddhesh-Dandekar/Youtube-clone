@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
     const [ username, setUsername ] = useState('');
     const [ email, setEmail] = useState('');
     const [ password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     async function handleregister(event){
         event.preventDefault();
@@ -19,6 +21,15 @@ function Signup() {
                 password : password
             })
         }).then(response => response.json());
+
+        console.log(register)
+        if(register.error){
+            alert(register.message);
+        }
+        else{
+            alert(register.message);
+            return navigate('/');
+        }
     }
     return (
         <>

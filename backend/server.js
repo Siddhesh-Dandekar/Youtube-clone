@@ -2,6 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import userroutes from './Routes/user.routes.js';
 import cors from 'cors'
+import ChannelRoutes from './Routes/channel.routes.js';
+import videoRoutes from './Routes/video.routes.js';
 
 const app = new express();
 mongoose.connect('mongodb://localhost:27017/youtube')
@@ -22,3 +24,5 @@ app.use(express.json())
 
 
 userroutes(app);
+ChannelRoutes(app);
+videoRoutes(app);

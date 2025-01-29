@@ -9,17 +9,19 @@ const CredentialSlice = createSlice({
             email: null,
             validuser: false,
             avatar: null,
+            channelId: null
         }]
     },
     reducers: {
         adddata: (state, action) => {
-            const { _id, username, email, validuser, avatar } = action.payload.user;
+            const { _id, username, email, validuser, avatar, channelId} = action.payload.user;
             const updatedata = state.data.find(x => x);
             updatedata._id = _id;
             updatedata.username = username;
             updatedata.email = email;
             updatedata.validuser = validuser;
             updatedata.avatar = avatar;
+            updatedata.channelId = channelId;
 
         },
         fetchdata: (state, action) => {

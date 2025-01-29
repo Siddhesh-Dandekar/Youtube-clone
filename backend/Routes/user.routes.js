@@ -8,4 +8,5 @@ function userroutes(app){
     app.get("/validuser",VerifyToken, fetchUser)
 }
 
+
 export default userroutes;

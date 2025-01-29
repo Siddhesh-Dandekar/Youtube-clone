@@ -21,11 +21,11 @@ const appRouter = createBrowserRouter([
         element: <Body />
       },
       {
-        path: '/watch',
+        path: '/watch/:id',
         element: <Watchvideo />
       },
       {
-        path:'/channel',
+        path:'/channel/:id',
         element: <Channel />
       }
     ]
@@ -41,10 +41,7 @@ const appRouter = createBrowserRouter([
 
 ])
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <Provider store={appStore}>
       <RouterProvider router={appRouter} ></RouterProvider>
     </Provider>
-
-  </StrictMode>,
 )

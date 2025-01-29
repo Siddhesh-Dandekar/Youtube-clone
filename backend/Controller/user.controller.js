@@ -13,15 +13,14 @@ export function registerUser(req, res) {
                 password
             })
             newuser.save();
-            return res.status(201).json(data);
+            return res.status(201).json({message: "Successfully Registered", error: false});
         }
-        res.status(409).json({
+        res.status(200).json({
             message: "email already registered",
             error: true
         });
     }).catch(err => {
-        console.log(err),
-            res.send(err);
+            res.json({error:true, message:err});
     })
 
 }
