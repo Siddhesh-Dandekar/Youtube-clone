@@ -4,20 +4,45 @@ import { useState, useEffect} from 'react'
 
 function Body() {
     const visiblestatus = useSelector(x => x.sidebar);
-
-    const [ videoData, setVideoData] = useState([]);
-
+    const [videoData, setVideoData] = useState([]);
+    const [filteredData , setFilteredData] = useState([]);
+    const [category, setCategory] = useState(null);
+    const searchInfo = useSelector(x => x.search.data);
+    
     useEffect(() => {
         const fetchVideos = async () => {
             const videosInfo = await fetch('http://localhost:5100/videos').then(data => data.json());
             if(videosInfo){
                 setVideoData(videosInfo);
+                setFilteredData(videosInfo);
             }
         }
         fetchVideos();
-        console.log(videoData)
     },[]);
+    
+    useEffect(() => {
+        if (searchInfo) {
+            const filtered = videoData.filter(x => x.title.toLowerCase().includes(searchInfo.toLowerCase()));
+            setFilteredData(filtered);
+            console.log(filtered);
+        } else {
+            setFilteredData(videoData);
+        }
+    }, [searchInfo, videoData]);
 
+
+    useEffect(() => {
+        console.log(category);
+        if (category) {
+            const filtered = videoData.filter(x => x.title.toLowerCase().includes(category.toLowerCase()) || x.description.toLowerCase().includes(category.toLowerCase()));
+            setFilteredData(filtered);
+            console.log(filtered);
+        } else {
+            setFilteredData(videoData);
+        }
+    }, [category, videoData]);
+    
+    
 
     return (
         <>
@@ -107,17 +132,17 @@ function Body() {
 
                 <div  className={`${visiblestatus.visible ? 'w-full mx-2 ml-20 xl:ml-56 overflow-hidden' : 'w-full mx-2 ml-20 overflow-hidden'}`}>
                     <div className="overflow-hidden fixed bg-white w-screen mx-2 h-12 flex items-center z-[2]">
-                        <ul className="flex gap-2 text-sm">
-                            <li className="bg-gray-100 font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md">All</li>
-                            <li className="bg-gray-100 font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md">Music</li>
-                            <li className="bg-gray-100 font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md">Gaming</li>
-                            <li className="bg-gray-100 font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md">Rockstar Games</li>
+                        <ul className="flex gap-2 text-sm select-none">
+                            <li onClick={() => setCategory(null)} className={category == null ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>All</li>
+                            <li onClick={() => setCategory("Music")} className={category == "Music" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Music</li>
+                            <li onClick={() => setCategory("Gaming")} className={category == "Gaming" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Gaming</li>
+                            <li onClick={() => setCategory("Food")} className={category == "Food" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Food</li>
 
                         </ul>
                     </div>
                     <div className="mt-12" >
                         <div id='maincontent' className={`${visiblestatus.visible ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 blureffect' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'}`} >
-                            {videoData.map(x => <Content key={x._id} data={x} /> )}
+                            {filteredData.map(x => <Content key={x._id} data={x} /> )}
                         </div>
                     </div>
                 </div>

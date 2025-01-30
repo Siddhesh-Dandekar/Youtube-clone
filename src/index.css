@@ -107,3 +107,16 @@ input {
     filter: blur(1px) grayscale(100%);
   }
 }
+
+img{
+height: revert-layer;
+object-fit: cover;
+}
+
+.comment-section input:focus {
+  outline: none;
+  border-width : 0px 0px 2px 0px;
+  border-color: black;
+  border-style: solid;
+}
+

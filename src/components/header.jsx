@@ -7,12 +7,14 @@ import { changeState } from "../utils/sidebarSlice";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { cleardata } from "../utils/credentialSlice.js"
+import { clearinfo, searchinfo } from "../utils/searchSlice.js";
 
 function Header() {
     const navigate = useNavigate();
     const [profileModel, setProfileModel] = useState(false);
     const [createchannelmodel, setCreateChannelModel] = useState(false)
     const [channelDetails, setChannelDetails] = useState('')
+    const [searchbar , setSearchBar] = useState('')
 
     const [channelName, setChannelName] = useState("");
     const [description, setDescription] = useState('');
@@ -21,6 +23,14 @@ function Header() {
     const dispatch = useDispatch();
     function togglesmenu() {
         dispatch(changeState());
+    }
+
+    function handlesearch(){
+        dispatch(searchinfo(searchbar));
+    }
+    function clearsearch(){
+        dispatch(clearinfo(null))
+        setSearchBar('')
     }
 
     function signOut() {
@@ -78,20 +88,21 @@ function Header() {
             <nav className="px-4 gap-2 flex justify-between h-full items-center">
                 <div className="flex items-center flex-grow">
                     <FontAwesomeIcon onClick={togglesmenu} className="h-4 w-4 rounded-full  hover:bg-gray-200 p-3" icon={faBars}></FontAwesomeIcon>
-                    <img src="/src/assets/youtube.webp" alt="" width="122" height="56" />
+                    <Link to="/"><img src="/src/assets/youtube.webp" alt="" width="122" height="56" /></Link>
                 </div>
                 <div className="flex justify-center items-center flex-grow-[3] gap-2 h-full">
-                    <div className="flex w-5/6 h-2/3">
-                        <input type="text" className="border-gray-300 rounded-s-full px-4 border w-full" placeholder="Search" />
-                        <button className="border-gray-300 border px-3 rounded-e-full hover:bg-gray-200 " ><FontAwesomeIcon className=" rounded-full  p-2" icon={faMagnifyingGlass} /></button>
+                    <div className="flex relative w-5/6 h-2/3">
+                        <input onChange={(e) => setSearchBar(e.target.value)} type="text" className="border-gray-300 relative rounded-s-full px-4 border w-full" placeholder="Search" value={searchbar}/>
+                        {searchbar ? <img onClick={clearsearch} className="absolute cursor-pointer hover:bg-gray-200 rounded-full right-16 top-1" width="30" height="30" src="https://img.icons8.com/ios/30/multiply.png" alt="multiply"/> : '' }
+                        <button onClick={handlesearch} className="border-gray-300 border px-3 rounded-e-full hover:bg-gray-200 " ><FontAwesomeIcon className=" rounded-full  p-2" icon={faMagnifyingGlass} /></button>
                     </div>
                     <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faMicrophone}></FontAwesomeIcon>
                 </div>
                 <div className="justify-end text-sm items-center gap-2 flex-grow h-full flex">
                     {userinfo.validuser ? <>
-                        <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faVideo}></FontAwesomeIcon>
+                        {channelDetails ? <Link to='/channel/studio'><FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faVideo}></FontAwesomeIcon></Link> : ''}
                         <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faBell}></FontAwesomeIcon>
-                        <img src={userinfo.avatar} onClick={() => setProfileModel(!profileModel)} className="rounded-full" height="34" width="34" alt="" />
+                        <img src={channelDetails ? channelDetails.channelProfile : "https://img.icons8.com/color/32/test-account.png"} onClick={() => setProfileModel(!profileModel)} className="rounded-full" height="34" width="34" alt="" />
                     </>
                         :
                         <Link to='/login'>
@@ -109,10 +120,7 @@ function Header() {
         {profileModel ? <div className="bg-white rounded-md pt-4 pb-2 shadow-md border flex flex-col gap-2 text-sm border-gray-100 fixed z-20 right-16 top-2">
             {userinfo.channelId ? <div className="flex px-3 gap-3 mr-8">
                 <div>
-                    {channelDetails ? <>
-                        <img src={channelDetails.channelProfile} className="rounded-full" height="34" width="34" alt="" />
-                    </> : <img src={userinfo.avatar} className="rounded-full" height="34" width="34" alt="" />}
-
+                        <img src={channelDetails ? channelDetails.channelProfile : "https://img.icons8.com/color/32/test-account.png"} className="rounded-full" height="34" width="34" alt="" />
                 </div>
                 <div className="flex flex-col text-sm font-medium">
                     {channelDetails ? <>
@@ -124,7 +132,7 @@ function Header() {
                 </div>
             </div> : <div className="flex px-3 gap-3 mr-8">
                 <div>
-                    <img width="34" height="34" className="rounded-full" src="https://img.icons8.com/fluency-systems-filled/34/user-male-circle.png" alt="user-male-circle" />
+                    <img width="34" height="34" className="rounded-full" src="https://img.icons8.com/color/32/test-account.png" alt="user-male-circle" />
                 </div>
                 <div className="flex flex-col items-start text-sm font-medium">
                     <span className="w-32 text-ellipsis overflow-hidden whitespace-nowrap">{userinfo.username}</span>

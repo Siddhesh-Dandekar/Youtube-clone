@@ -29,13 +29,45 @@ export async function createChannel(req, res) {
 
 }
 
-export async function fetchChannel(req, res){
+export async function fetchChannel(req, res) {
     const channelId = req.params.id;
     try {
         const channelInfo = await channelModel.findById(channelId);
         return res.json(channelInfo);
     }
-    catch(err){
-        return res.json({message : err.message});
+    catch (err) {
+        return res.json({ message: err.message });
     }
+}
+
+
+export async function updateChannel(req, res) {
+    try {
+        const { channelName, channelProfile, channelBanner } = req.body;
+        const { _id } = req.user;
+        const ExistingChannel = await userModel.findById(_id);
+        if (!ExistingChannel.channelId) {
+            throw new Error("Channel doesn't exist");
+        }
+        const ChannelInfo = await channelModel.findById(ExistingChannel.channelId);
+        if(channelName){
+            ChannelInfo.channelName = channelName;
+            await ChannelInfo.save();
+            return res.json({message : "updated"})
+        }
+        if(channelProfile){
+            ChannelInfo.channelProfile = channelProfile;
+            await ChannelInfo.save();
+            return res.json({message : "updated"})
+        }
+        if(channelBanner){
+            ChannelInfo.channelBanner = channelBanner;
+            await ChannelInfo.save();
+            return res.json({message : "updated"})
+        }
+
+    } catch (err) {
+        return res.json({ error: true, message: err.message })
+    }
+
 }

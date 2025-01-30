@@ -10,6 +10,7 @@ import Signup from './components/signup';
 import Login from './components/login.jsx';
 import { Provider } from 'react-redux';
 import appStore from './utils/configureStore.js';
+import Studio from './components/studio.jsx'
 
 const appRouter = createBrowserRouter([
   {
@@ -27,6 +28,11 @@ const appRouter = createBrowserRouter([
       {
         path:'/channel/:id',
         element: <Channel />
+      }
+      ,
+      {
+        path: '/channel/studio',
+        element : <Studio />
       }
     ]
   },

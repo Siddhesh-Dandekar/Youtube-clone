@@ -44,7 +44,7 @@ const videoSchema = mongoose.Schema({
     },
     comments:[
         {
-            userid: {
+            channelId: {
                 type: String,
                 required: true
             },

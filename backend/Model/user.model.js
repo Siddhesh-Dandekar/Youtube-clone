@@ -22,6 +22,14 @@ const userSchema = mongoose.Schema({
         ref : 'channels',
         default : null,
         unique:true
+    },
+    likedVideos : {
+        type: Array,
+        default: []
+    },
+    dislikedVideos : {
+        type: Array,
+        default: []
     }
 })
 
