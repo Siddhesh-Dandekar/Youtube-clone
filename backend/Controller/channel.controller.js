@@ -33,12 +33,15 @@ export async function fetchChannel(req, res) {
     const channelId = req.params.id;
     try {
         const channelInfo = await channelModel.findById(channelId);
+        if (!channelInfo) {
+            return res.status(404).json({ message: 'Channel not found' });
+        }
         return res.json(channelInfo);
-    }
-    catch (err) {
-        return res.json({ message: err.message });
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
     }
 }
+
 
 
 export async function updateChannel(req, res) {

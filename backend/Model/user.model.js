@@ -21,7 +21,6 @@ const userSchema = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'channels',
         default : null,
-        unique:true
     },
     likedVideos : {
         type: Array,

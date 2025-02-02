@@ -1,14 +1,19 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { data, Link } from "react-router-dom";
+import ManageVideos from "./Manage.video";
+import CreateChannel from "./createChannel";
 
 function Studio() {
     const [channelPage, setChannelPage] = useState(true);
     const [videoPage, setVideoPage] = useState(false);
+    const [manageVideo, setManageVideo] = useState(false)
     const [loading, setLoading] = useState(false);
+
 
     //Uploading Video
     const [channelDetails, setChannelDetails] = useState('')
+    const [channelVideos, setChannelVideos] = useState([]);
     const [videoTitle, setVideoTitle] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
     const [thumbnailUrl, setThumbnailUrl] = useState('');
@@ -22,12 +27,25 @@ function Studio() {
 
     const visiblestatus = useSelector(x => x.sidebar);
     const UserInfo = useSelector(x => x.credential.data[0])
-    console.log(UserInfo);
 
     useEffect(() => {
         const ChannelFetch = async () => {
             const channelInfo = await fetch(`http://localhost:5100/channel/${UserInfo.channelId}`).then(data => data.json());
             setChannelDetails(channelInfo);
+            const updatedVideos = [];
+            if (channelInfo.videos) {
+                for (let x of channelInfo.videos) {
+                    try {
+                        const videoData = await fetch(`http://localhost:5100/video/${x}`).then(data => data.json());
+                        updatedVideos.push(videoData);
+                    }
+                    catch (err) {
+
+                    }
+
+                }
+            }
+            setChannelVideos(updatedVideos);
         }
         ChannelFetch();
     }, [UserInfo, loading]);
@@ -109,8 +127,64 @@ function Studio() {
             alert(err.message)
         }
     }
+
+    async function deleteVideo(id) {
+        try {
+            setLoading(true);
+            setTimeout(() => {
+                setLoading(false);
+            }, 5000);
+            if (accessToken && accessToken !== undefined) {
+                const DeleteVideo = await fetch('http://localhost:5100/video/delete', {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `JWT ${accessToken}`
+                    },
+                    body: JSON.stringify({
+                        videoid: id,
+                        channelid: channelDetails._id
+                    })
+                }).then(data => data.json());
+
+            }
+        } catch (err) {
+            return console.log(err.message)
+        }
+    }
+
+    async function editVideo(event, obj) {
+        const { _id, editTitle, editThumbnailUrl, editDescription } = obj;
+        console.log(_id)
+        event.preventDefault();
+        try {
+            setLoading(true);
+            setTimeout(() => {
+                setLoading(false);
+            }, 3000);
+            if (accessToken && accessToken !== undefined) {
+                const EditVideo = await fetch('http://localhost:5100/video/edit', {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `JWT ${accessToken}`
+                    },
+                    body: JSON.stringify({
+                        videoid: _id,
+                        title: editTitle,
+                        thumbnailUrl: editThumbnailUrl,
+                        description: editDescription
+                    })
+                }).then(data => data.json());
+            }
+        } catch (err) {
+            console.log(err.message)
+        }
+    }
     return (<>
-        {UserInfo.validuser ? <main className="flex w-full pt-14 ">
+        {/* {UserInfo.validuser ?  : } */}
+
+        {UserInfo.validuser ? (UserInfo.channelId ? <main className="flex w-full min-h-screen pt-14 ">
             {visiblestatus.visible ? <div className="w-56 fixed bg-white h-screen z-10  flex text-[0.8rem] flex-col px-4 pt-2 list-none">
                 <div className="flex flex-col py-2 items-center px-2">
                     <img className="rounded-full border" src={channelDetails.channelProfile} width="110" height="110" alt="" />
@@ -118,17 +192,21 @@ function Studio() {
                     <span>{channelDetails.channelName}</span>
                 </div>
                 <Link to="/">
-                    <div className="h-10 px-2 flex items-center rounded-lg bg-gray-100 hover:bg-gray-200">
+                    <div className="h-10 px-2 flex items-center rounded-lg hover:bg-gray-100">
                         <svg className="mr-5" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 24 24">
                             <path d="M 12 2 A 1 1 0 0 0 11.289062 2.296875 L 1.203125 11.097656 A 0.5 0.5 0 0 0 1 11.5 A 0.5 0.5 0 0 0 1.5 12 L 4 12 L 4 20 C 4 20.552 4.448 21 5 21 L 9 21 C 9.552 21 10 20.552 10 20 L 10 14 L 14 14 L 14 20 C 14 20.552 14.448 21 15 21 L 19 21 C 19.552 21 20 20.552 20 20 L 20 12 L 22.5 12 A 0.5 0.5 0 0 0 23 11.5 A 0.5 0.5 0 0 0 22.796875 11.097656 L 12.716797 2.3027344 A 1 1 0 0 0 12.710938 2.296875 A 1 1 0 0 0 12 2 z"></path>
                         </svg>
                         <h2 className=" font-medium flex-grow">Home</h2>
                     </div></Link>
-                <div onClick={() => { setChannelPage(false); setVideoPage(true) }} className="h-10 cursor-pointer px-2 flex items-center rounded-lg  hover:bg-gray-100">
+                <div onClick={() => { setChannelPage(false); setManageVideo(false); setVideoPage(true) }} className="h-10 cursor-pointer px-2 flex items-center rounded-lg  hover:bg-gray-100">
                     <img width="20" height="20" className="mr-5" src="https://img.icons8.com/fluency-systems-regular/20/upload--v1.png" alt="upload--v1" />
-                    <h2 className=" font-medium flex-grow" >Videos</h2>
+                    <h2 className=" font-medium flex-grow" >Upload Videos</h2>
                 </div>
-                <div onClick={() => { setChannelPage(true); setVideoPage(false) }} className="h-10 cursor-pointer px-2 flex items-center rounded-lg hover:bg-gray-100">
+                <div onClick={() => { setChannelPage(false); setManageVideo(true); setVideoPage(false) }} className="h-10 cursor-pointer px-2 flex items-center rounded-lg hover:bg-gray-100">
+                    <img width="20" height="20" className="mr-5" src="https://img.icons8.com/ios-glyphs/20/video-trimming.png" alt="video-trimming" />
+                    <h2 className=" font-medium flex-grow">Manage Videos</h2>
+                </div>
+                <div onClick={() => { setChannelPage(true); setManageVideo(false); setVideoPage(false) }} className="h-10 cursor-pointer px-2 flex items-center rounded-lg hover:bg-gray-100">
                     <img width="20" height="20" className="mr-5" src="https://img.icons8.com/windows/20/vertical-settings-mixer.png" alt="vertical-settings-mixer" />
                     <h2 className=" font-medium flex-grow">Channel</h2>
                 </div>
@@ -142,11 +220,15 @@ function Studio() {
                     <h2 className=" font-medium">Home</h2>
                 </div></Link>
 
-                <div onClick={() => { setChannelPage(false); setVideoPage(true) }} className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100">
+                <div onClick={() => { setChannelPage(false); setManageVideo(false); setVideoPage(true) }} className="h-10 px-2 gap-1 cursor-pointer flex flex-col items-center rounded-lg hover:bg-gray-100">
                     <img width="20" height="20" src="https://img.icons8.com/fluency-systems-regular/20/upload--v1.png" alt="upload--v1" />
                     <h2 className=" font-medium flex-grow">Videos</h2>
                 </div>
-                <div onClick={() => { setChannelPage(true); setVideoPage(false) }} className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100">
+                <div onClick={() => { setChannelPage(false); setManageVideo(true); setVideoPage(false) }} className="h-10 px-2 gap-1 cursor-pointer flex flex-col items-center rounded-lg hover:bg-gray-100">
+                    <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/20/video-trimming.png" alt="video-trimming" />
+                    <h2 className=" font-medium flex-grow">Manage</h2>
+                </div>
+                <div onClick={() => { setChannelPage(true); setManageVideo(false); setVideoPage(false) }} className="h-10 px-2 gap-1 cursor-pointer flex flex-col items-center rounded-lg hover:bg-gray-100">
                     <img width="20" height="20" src="https://img.icons8.com/windows/20/vertical-settings-mixer.png" alt="vertical-settings-mixer" />
                     <h2 className=" font-medium flex-grow">Channel</h2>
                 </div>
@@ -166,9 +248,9 @@ function Studio() {
 
                                 <div className="flex text-sm gap-2 flex-col ">
                                     <form action="#" onSubmit={(e) => updateChannel(e, "Banner")} className="flex flex-col gap-2">
-                                        <span>For the best results on all devices, use an image that's at least 2048 x 1152 pixels</span>
+                                        <span className="max-sm:text-xs">For the best results on all devices, use an image that's at least 2048 x 1152 pixels</span>
                                         <input required type="url" onChange={(e) => setUpdateBanner(e.target.value)} placeholder="enter URL" className="border h-7 text-sm px-1" />
-                                        <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 text-base rounded-full">upload</button>
+                                        <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 sm:text-base rounded-full">upload</button>
                                     </form>
                                 </div>
                             </div>
@@ -182,9 +264,9 @@ function Studio() {
 
                                 <div className="flex text-sm gap-2 flex-col ">
                                     <form action="#" onSubmit={(e) => updateChannel(e, "Profile")} className="flex flex-col gap-2">
-                                        <span>It's recommended that you use a picture that's at least 98 x 98 pixels</span>
+                                        <span className="max-sm:text-xs">It's recommended that you use a picture that's at least 98 x 98 pixels</span>
                                         <input required type="url" onChange={(e) => setUpdateProfile(e.target.value)} placeholder="enter URL" className="border h-7 text-sm px-1" />
-                                        <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 text-base rounded-full">upload</button>
+                                        <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 sm:text-base rounded-full">upload</button>
                                     </form>
                                 </div>
                             </div>
@@ -198,9 +280,9 @@ function Studio() {
 
                                 <div className="flex text-sm gap-2 flex-col ">
                                     <form action="#" onSubmit={(e) => updateChannel(e, "Name")} className="flex flex-col gap-2">
-                                        <span>Choose a channel name that represents you and your content. Changes made to your name and picture are only visible on YouTube and not on other Google services</span>
+                                        <span className="max-sm:text-xs">Choose a channel name that represents you and your content. Changes made to your name and picture are only visible on YouTube and not on other Google services</span>
                                         <input required onChange={(e) => setUpdateName(e.target.value)} type="text" placeholder="Enter Name" className="border h-7 text-sm px-1" />
-                                        <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 text-base rounded-full">Change</button>
+                                        <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 sm:text-base rounded-full">Change</button>
                                     </form>
                                 </div>
                             </div>
@@ -210,7 +292,7 @@ function Studio() {
                 {videoPage ? <>
                     <h1 className="text-xl font-semibold py-2">Upload Video</h1>
                     <div className="w-full">
-                        <div className="text-base border border-gray-600 rounded-md w-full md:w-2/3 p-4">
+                        <div className="text-xs sm:text-base border border-gray-600 rounded-md w-full md:w-2/3 p-2 sm:p-4">
                             <form action="#" className="w-full font-medium " onSubmit={(e) => uploadVideo(e)}>
                                 <label htmlFor="">Video Title</label>
                                 <br />
@@ -228,9 +310,18 @@ function Studio() {
                                 <br />
                                 <textarea onChange={(e) => setDescription(e.target.value)} name="" rows="20" className="p-1 border w-full leading-none" id=""></textarea>
                                 <br />
-                                <button type="submit" className="my-1 bg-gray-200 w-fit px-3 py-1 text-base rounded-full">Upload</button>
+                                <button type="submit" className="my-1 bg-gray-200 w-fit px-3 py-1 sm:text-base rounded-full">Upload</button>
                             </form>
                         </div>
+
+                    </div>
+                </> : ''}
+                {manageVideo ? <>
+                    <h1 className="text-xl font-semibold py-2 ">Manage Videos</h1>
+                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+
+                        {channelVideos.map(x => <ManageVideos key={x._id} data={x} del={deleteVideo} edit={editVideo} />)}
+
 
                     </div>
                 </> : ''}
@@ -240,17 +331,15 @@ function Studio() {
                         <img src="../src/assets/loading.gif" className="mix-blend-darken" alt="" width="50" />
                     </div>
                 </div> : ''}
-
             </div>
-
-        </main> : <main className="flex w-full pt-14 ">
-            <div className="m-auto items-center gap-2 flex flex-col my-20">
-                <img width="250" src="https://cdn.weasyl.com/static/media/8e/dc/29/8edc294ae4385580797f906d4c15f2d1480f364d3997f6b5196285ffcc689a8b.png" alt="" />
-                <h1 className="text-xl text-center">This page isn't available. Sorry about that. <br />Please login before you access this page</h1>
-                <Link to='/'><button className="my-1 bg-black w-fit px-3 py-1 text-lg  text-white rounded-full">Home Page</button></Link>
-            </div>
-
-        </main>}
+        </main> : <CreateChannel name={UserInfo.username}/>) :
+            <main className="flex w-full pt-14 ">
+                <div className="m-auto items-center gap-2 flex flex-col my-20">
+                    <img width="250" src="https://cdn.weasyl.com/static/media/8e/dc/29/8edc294ae4385580797f906d4c15f2d1480f364d3997f6b5196285ffcc689a8b.png" alt="" />
+                    <h1 className="text-xl text-center">This page isn't available. Sorry about that. <br />Please login before you access this page</h1>
+                    <Link to='/'><button className="my-1 bg-black w-fit px-3 py-1 text-lg  text-white rounded-full">Home Page</button></Link>
+                </div>
+            </main>}
 
     </>)
 }

@@ -8,6 +8,7 @@ function Body() {
     const [filteredData , setFilteredData] = useState([]);
     const [category, setCategory] = useState(null);
     const searchInfo = useSelector(x => x.search.data);
+
     
     useEffect(() => {
         const fetchVideos = async () => {
@@ -24,7 +25,6 @@ function Body() {
         if (searchInfo) {
             const filtered = videoData.filter(x => x.title.toLowerCase().includes(searchInfo.toLowerCase()));
             setFilteredData(filtered);
-            console.log(filtered);
         } else {
             setFilteredData(videoData);
         }
@@ -32,7 +32,6 @@ function Body() {
 
 
     useEffect(() => {
-        console.log(category);
         if (category) {
             const filtered = videoData.filter(x => x.title.toLowerCase().includes(category.toLowerCase()) || x.description.toLowerCase().includes(category.toLowerCase()));
             setFilteredData(filtered);

@@ -1,6 +1,7 @@
 import userModel from "../Model/user.model.js";
 import videoModel from "../Model/video.model.js";
 import channelModel from "../Model/channel.model.js";
+import mongoose from "mongoose";
 
 export async function uploadvideo(req, res) {
     const { title, thumbnailUrl, description, videoUrl } = req.body;
@@ -41,16 +42,25 @@ export async function fetchVideos(req, res) {
     }
 }
 
+
 export async function fetchVideoById(req, res) {
     const { id } = req.params;
+    
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Invalid Video ID format' });
+    }
+
     try {
         const videoData = await videoModel.findById(id);
-        return res.send(videoData);
-    }
-    catch (err) {
-        return res.json({ message: err.message })
+        if (!videoData) {
+            return res.status(404).json({ message: 'Video not found' });
+        }
+        return res.status(200).json(videoData);
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
     }
 }
+
 
 export async function addViews(req, res) {
     const { videoid } = req.params;
@@ -160,10 +170,10 @@ export async function AddComment(req, res){
         return res.json({message : err.message});
     }
 }
+
 export async function DeleteComment(req, res){
     const { commentId , videoid} = req.body;
     const { channelId } = req.user;
-    console.log(commentId, videoid, channelId);
     try{
         const VideoData = await videoModel.findById(videoid);
         const CommentInfo = VideoData.comments.find(x => x._id == commentId);
@@ -176,6 +186,67 @@ export async function DeleteComment(req, res){
         return res.send(VideoData.comments);
     }
     catch(err){
+        return res.json({message : err.message})
+    }
+}
+
+export async function EditComment(req, res){
+    const { commentId , videoid , Updatetext } =req.body;
+    const { channelId } = req.user;
+    try{
+        const VideoData = await videoModel.findById(videoid);
+        const CommentInfo = VideoData.comments.find(x => x._id == commentId);
+        if(!CommentInfo || CommentInfo.channelId !== channelId.toString()){
+            throw new Error('Comment Not Found / Your are Not allowed to Delete');
+        }
+        if(CommentInfo.text == Updatetext){
+            return res.json({message : 'No changes Required'});
+        }
+        CommentInfo.text = Updatetext;
+        await VideoData.save()
+        return res.json({text : Updatetext})
+
+    }catch(err){
+        return res.json({message : err.message})
+    }
+
+}
+
+
+export async function DeleteVideo(req, res){
+    const { videoid , channelid } = req.body;
+    const { _id } = req.user;
+    try{        
+        const VideoInfo = await videoModel.findById(videoid);
+        const ChannelInfo = await channelModel.findById(channelid);
+        if(!VideoInfo || !ChannelInfo || ((ChannelInfo.userId.toString() && VideoInfo.userId) !== _id.toString() )){
+            throw new Error("You Are not allowed to delete")
+        }else{
+            const filteredVideos = ChannelInfo.videos.filter(x => x.toString() !== videoid.toString());
+            ChannelInfo.videos = filteredVideos;
+            await ChannelInfo.save();
+            await videoModel.findByIdAndDelete(videoid);
+            return res.json({message : ChannelInfo.videos});
+        }
+    }catch(err){
+        return res.json({message : err.message})
+    }
+}
+
+export async function EditVideo(req, res){
+    const { videoid, title, thumbnailUrl, description } = req.body;
+    const { _id } = req.user;
+    try{
+        const VideoInfo = await videoModel.findById(videoid);
+        if(!VideoInfo || VideoInfo.userId !== _id.toString()){
+            throw new Error('Video Not Found / Your are not Allowed to Edit')
+        }
+        VideoInfo.title = title;
+        VideoInfo.thumbnailUrl = thumbnailUrl;
+        VideoInfo.description = description;
+        await VideoInfo.save();
+        return res.send(VideoInfo);
+    }catch(err){
         return res.json({message : err.message})
     }
 }

@@ -30,7 +30,7 @@ const CredentialSlice = createSlice({
         cleardata: (state, action)=>{
             const deletedata = state.data.find(x => x);
             for(let key in deletedata){
-                deletedata[key] = undefined
+                deletedata[key] = null
             }
         }
     }

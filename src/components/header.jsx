@@ -86,29 +86,29 @@ function Header() {
     return <>
         <header className="w-full select-none h-14 fixed z-10 bg-white">
             <nav className="px-4 gap-2 flex justify-between h-full items-center">
-                <div className="flex items-center flex-grow">
+                <div className="flex gap-1 items-center flex-grow">
                     <FontAwesomeIcon onClick={togglesmenu} className="h-4 w-4 rounded-full  hover:bg-gray-200 p-3" icon={faBars}></FontAwesomeIcon>
-                    <Link to="/"><img src="/src/assets/youtube.webp" alt="" width="122" height="56" /></Link>
+                    <Link to="/"><img className="hidden sm:block" src="/src/assets/youtube.webp" alt="" width="122" height="56" /> <img width="34" height="34" src="https://img.icons8.com/fluency/48/youtube-play.png" className="sm:hidden" alt="youtube-play"/></Link>
                 </div>
-                <div className="flex justify-center items-center flex-grow-[3] gap-2 h-full">
-                    <div className="flex relative w-5/6 h-2/3">
-                        <input onChange={(e) => setSearchBar(e.target.value)} type="text" className="border-gray-300 relative rounded-s-full px-4 border w-full" placeholder="Search" value={searchbar}/>
-                        {searchbar ? <img onClick={clearsearch} className="absolute cursor-pointer hover:bg-gray-200 rounded-full right-16 top-1" width="30" height="30" src="https://img.icons8.com/ios/30/multiply.png" alt="multiply"/> : '' }
-                        <button onClick={handlesearch} className="border-gray-300 border px-3 rounded-e-full hover:bg-gray-200 " ><FontAwesomeIcon className=" rounded-full  p-2" icon={faMagnifyingGlass} /></button>
+                <div className="flex justify-center items-center w-36 sm:w-auto flex-grow-[3] gap-2 h-full">
+                    <div className="flex relative w-full sm:w-5/6 h-2/3">
+                        <input onChange={(e) => setSearchBar(e.target.value)} type="text" className="border-gray-300 relative rounded-s-full px-2 sm:px-4 border w-full" placeholder="Search" value={searchbar}/>
+                        {searchbar ? <img onClick={clearsearch} className="absolute cursor-pointer hover:bg-gray-200 rounded-full right-10 sm:right-16 top-1" width="30" height="30" src="https://img.icons8.com/ios/30/multiply.png" alt="multiply"/> : '' }
+                        <button onClick={handlesearch} className="border-gray-300 border px-1 sm:px-3 rounded-e-full hover:bg-gray-200 " ><FontAwesomeIcon className=" rounded-full p-2" icon={faMagnifyingGlass} /></button>
                     </div>
-                    <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faMicrophone}></FontAwesomeIcon>
+                    <FontAwesomeIcon className="h-4 hidden sm:block w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faMicrophone}></FontAwesomeIcon>
                 </div>
                 <div className="justify-end text-sm items-center gap-2 flex-grow h-full flex">
                     {userinfo.validuser ? <>
-                        {channelDetails ? <Link to='/channel/studio'><FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faVideo}></FontAwesomeIcon></Link> : ''}
-                        <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faBell}></FontAwesomeIcon>
+                        {channelDetails ? <Link className="flex" to='/channel/studio'><FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faVideo}></FontAwesomeIcon></Link> : ''}
+                        <FontAwesomeIcon className="h-4 hidden sm:block w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faBell}></FontAwesomeIcon>
                         <img src={channelDetails ? channelDetails.channelProfile : "https://img.icons8.com/color/32/test-account.png"} onClick={() => setProfileModel(!profileModel)} className="rounded-full" height="34" width="34" alt="" />
                     </>
                         :
                         <Link to='/login'>
-                            <button className="flex items-center hover:bg-gray-100 gap-1 text-blue-500 font-medium border border-gray-300 p-1 rounded-full px-2">
-                                <img src="./src/assets/signin.png" alt="" className="rounded-full" height="24" width="24" />
-                                <span>Sign in</span>
+                            <button className="flex items-center hover:bg-gray-100 text-blue-500 font-medium border border-gray-300 p-1 rounded-full sm:px-2">
+                                <img src="../src/assets/signin.png" alt="" className="rounded-full" height="24" width="24" />
+                                <span className="hidden sm:block">Sign in</span>
                             </button>
                         </Link>}
 
