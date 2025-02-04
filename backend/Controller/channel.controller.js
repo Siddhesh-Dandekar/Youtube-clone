@@ -46,7 +46,7 @@ export async function fetchChannel(req, res) {
 
 export async function updateChannel(req, res) {
     try {
-        const { channelName, channelProfile, channelBanner } = req.body;
+        const { channelName, channelProfile, channelBanner , description } = req.body;
         const { _id } = req.user;
         const ExistingChannel = await userModel.findById(_id);
         if (!ExistingChannel.channelId) {
@@ -65,6 +65,11 @@ export async function updateChannel(req, res) {
         }
         if(channelBanner){
             ChannelInfo.channelBanner = channelBanner;
+            await ChannelInfo.save();
+            return res.json({message : "updated"})
+        }
+        if(description){
+            ChannelInfo.description = description;
             await ChannelInfo.save();
             return res.json({message : "updated"})
         }

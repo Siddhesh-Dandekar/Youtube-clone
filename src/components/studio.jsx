@@ -23,6 +23,7 @@ function Studio() {
     const [updateBanner, setUpdateBanner] = useState(null);
     const [updateProfile, setUpdateProfile] = useState(null);
     const [updateName, setUpdateName] = useState(null);
+    const [updateDescription, setUpdateDescription]= useState(null)
 
 
     const visiblestatus = useSelector(x => x.sidebar);
@@ -122,6 +123,18 @@ function Studio() {
                     })
                 }).then(data => data.json())
             }
+            if (updaterequest == "Description" && accessToken) {
+                const updateChanneIInfo = await fetch('http://localhost:5100/channel/update', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `JWT ${accessToken}`
+                    },
+                    body: JSON.stringify({
+                        description: updateDescription
+                    })
+                }).then(data => data.json())
+            }
 
         } catch (err) {
             alert(err.message)
@@ -189,7 +202,7 @@ function Studio() {
                 <div className="flex flex-col py-2 items-center px-2">
                     <img className="rounded-full border" src={channelDetails.channelProfile} width="110" height="110" alt="" />
                     <h1 className="font-semibold">Your Channel</h1>
-                    <span>{channelDetails.channelName}</span>
+                    <Link to={`/channel/${channelDetails._id}`}><span>{channelDetails.channelName}</span></Link>
                 </div>
                 <Link to="/">
                     <div className="h-10 px-2 flex items-center rounded-lg hover:bg-gray-100">
@@ -271,7 +284,6 @@ function Studio() {
                                 </div>
                             </div>
                         </div>
-
                         <div className="hover:bg-gray-100 p-2">
                             <div className="flex flex-col gap-2">
                                 <div className="flex flex-col items-start">
@@ -282,6 +294,22 @@ function Studio() {
                                     <form action="#" onSubmit={(e) => updateChannel(e, "Name")} className="flex flex-col gap-2">
                                         <span className="max-sm:text-xs">Choose a channel name that represents you and your content. Changes made to your name and picture are only visible on YouTube and not on other Google services</span>
                                         <input required onChange={(e) => setUpdateName(e.target.value)} type="text" placeholder="Enter Name" className="border h-7 text-sm px-1" />
+                                        <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 sm:text-base rounded-full">Change</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="hover:bg-gray-100 p-2">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-col items-start">
+                                    <span className="font-semibold">Description</span>
+                                </div>
+
+                                <div className="flex text-sm gap-2 flex-col mb-4 ">
+                                    <form action="#" onSubmit={(e) => updateChannel(e, "Description")} className="flex flex-col gap-2">
+                                    <span className="max-sm:text-xs">Update Your Channel Description</span>
+                                        <textarea maxLength='150' rows='5' required onChange={(e) => setUpdateDescription(e.target.value)} type="text" placeholder="Description" className="border leading-none h-7 text-sm p-1" />
                                         <button type="submit" className="my-1 bg-gray-200 w-fit px-2 py-1 sm:text-base rounded-full">Change</button>
                                     </form>
                                 </div>
