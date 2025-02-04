@@ -57,6 +57,7 @@ function Signup() {
                         
                         <p className="text-sm mb-5">Not your computer? Use Guest mode to sign in privately. <b className="text-blue-600 font-medium">Learn more about</b><br /> <Link to="/login"><b className="hover:underline cursor-pointer">Already have an account?</b></Link>   </p>
                         <button type="submit" className="text-white text-base p-2 px-3 hover:bg-blue-600 rounded-full ml-auto font-medium bg-blue-700">Create account</button>
+                        <Link to="/"><button className=" p-2 px-3 text-base hover:bg-gray-200 rounded-md mx-3 font-medium ">Cancel</button></Link>
                         </form>
                     </div>
                 </div>

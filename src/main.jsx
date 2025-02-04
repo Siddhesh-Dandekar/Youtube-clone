@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import appStore from './utils/configureStore.js';
 import { lazy, Suspense } from 'react';
 import Loading from './components/loading.jsx';
-
+import Error404 from './components/error404.jsx';
 
 const Body = lazy(() => import('./components/body.jsx'));
 const Watchvideo = lazy(() => import('./components/watchvideo.jsx'));
@@ -37,7 +37,8 @@ const appRouter = createBrowserRouter([
         path: '/channel/studio',
         element: <Suspense fallback={<Loading />}><Studio /></Suspense>
       }
-    ]
+    ],
+    errorElement : <Error404 />
   },
   {
     path: '/signup',

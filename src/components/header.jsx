@@ -196,7 +196,7 @@ function Header() {
                         <br />
                         <label htmlFor="username">Description</label>
                         <br />
-                        <textarea rows='4' className="border mb-5 w-full rounded-md p-1 border-gray-500" onChange={(e) => setDescription(e.target.value)} ></textarea>
+                        <textarea maxLength='150' rows='4' className="border mb-5 w-full rounded-md p-1 border-gray-500 leading-tight" onChange={(e) => setDescription(e.target.value)} ></textarea>
 
                         <p className="text-base mt-5">By clicking creates channel you agree to <b className="text-blue-600">Youtube Terms & Service</b>. Changes made to your name and profile picture are visible only on Youtube and for other Google services. <b className="text-blue-600">Learn more</b></p>
 

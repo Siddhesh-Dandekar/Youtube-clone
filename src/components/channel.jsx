@@ -59,14 +59,13 @@ function Channel() {
             <img className="w-full rounded-2xl min-h-36 sm:min-h-48 max-h-40" src={channelDetails.channelBanner} alt="" />
         </div>
         <div className="flex w-full gap-2">
-            <div>
-                <img className="rounded-full w-32 sm:w-40" src={channelDetails.channelProfile} alt="" />
+            <div className="flex min-w-fit">
+                <img className="rounded-full h-fit w-32 sm:w-40" src={channelDetails.channelProfile} alt="" />
             </div>
             <div className="flex flex-col justify-center gap-1 sm:gap-3 ml-2">
                 <h1 className="text-lg sm:text-2xl md:text-4xl font-semibold" >{channelDetails.channelName}</h1>
                 <h2 className="text-xs font-medium">@{channelDetails.channelName.toLowerCase().split(' ')[0]} <span className="text-gray-500">• {channelDetails.subscribers} subscribers • {channelDetails.videos.length} videos</span> </h2>
-                <span className=" text-xs text-gray-600">More about this channel
-                    ...more</span>
+                <span className="text-[0.6rem]  sm:text-xs text-gray-600">{channelDetails.description || 'More about this channel ...more'}</span>
                 {channelDetails.userId == UserInfo._id ? <Link to="/channel/studio"><button className="w-fit bg-gray-200 font-semibold text-xs sm:text-sm py-2 sm:py-2 px-2  sm:px-4 rounded-full">Customize Channel</button></Link> : <button className="w-fit bg-black text-xs sm:text-sm text-white py-2 px-4 rounded-full">Subscribe</button>}
 
             </div>

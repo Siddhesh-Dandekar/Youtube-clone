@@ -41,11 +41,12 @@ export function loginUser(req, res) {
     try {
         userModel.findOne({ email: email })
         .then(data => {
-            const ValidPassword = bcrypt.compareSync(password, data.password);
+            console.log(data);
             if (!data) {
                 return res.status(404).json({ error: true, message: 'Create account before login' });
             }
-            else if (ValidPassword) {
+            const ValidPassword = bcrypt.compareSync(password, data.password);
+            if (ValidPassword) {
                 const accesstoken = jwt.sign({ email: email }, 'Secretkey', {expiresIn: '2h' });
                 return res.status(200).json({ token: accesstoken });
             }
@@ -55,6 +56,7 @@ export function loginUser(req, res) {
             res.status(500).json({ error: true, message: err.message });
         });
     } catch (err) {
+        
         res.status(500).json({ error: true, message: err.message });
     }
 }
