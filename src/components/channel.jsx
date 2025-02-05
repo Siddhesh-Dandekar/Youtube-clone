@@ -11,6 +11,8 @@ function Channel() {
     const [channelVideos, setChannelVideos] = useState([]);
 
     const [errorFound , setErrorFound] = useState(false);
+
+    //To Retrieve Channel Information
     useEffect(() => {
         const ChannelFetch = async () => {
             try {

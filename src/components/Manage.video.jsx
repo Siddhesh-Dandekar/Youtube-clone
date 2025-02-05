@@ -6,6 +6,7 @@ function ManageVideos(props) {
     const deletefunction = props.del;
     const editfunction = props.edit;
 
+    //This Component is Used to manage our Videos EDIT/DELETE
     const [editModel, setEditModel] = useState(false);
     const [editTitle, setEditTitle] = useState(title);
     const [editDescription, setEditDescription] = useState(description);
@@ -16,7 +17,7 @@ function ManageVideos(props) {
         <div className=" flex flex-col h-full justify-between gap-2">
             <Link to={`/watch/${_id}`}>
                 <div className="rounded-lg overflow-hidden">
-                    <img className='w-full' src={thumbnailUrl} alt="" />
+                    <img className='w-full aspect-video' src={thumbnailUrl} alt="" />
                 </div>
             </Link>
             <div className='flex flex-col gap-1 '>
@@ -43,7 +44,7 @@ function ManageVideos(props) {
                     <h1>Edit Your Video</h1>
                 </div>
                 <div className="mx-auto my-5 w-11/12 lg:w-8/12 text-sm md:text-base">
-                    <img width="350" className="mx-auto mb-2 rounded-md" src={thumbnailUrl} alt="" />
+                    <img width="350" className="mx-auto mb-2 rounded-md aspect-video" src={thumbnailUrl} alt="" />
                     <form action="#" method="POST" onSubmit={(e)=> {setEditModel(false); editfunction(e,{_id,editTitle, editThumbnailUrl, editDescription})}}>
                         <label htmlFor="Profile">Title</label>
                         <br />

@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 
 function Content(props) {
     const {thumbnailUrl, title, views, channelId, _id} = props.data;
-    const [channeldata , setChannelData] = useState('')
+    const [channeldata , setChannelData] = useState('');
+
+    //This Component is Display Videos on the Home Page 
+
+    //Retrive ChannelInformation who uploaded that video
     useEffect(() => {
         const fetchChannel = async() => {
             const channelInfo = await fetch(`http://localhost:5100/channel/${channelId}`).then(data => data.json());
@@ -16,7 +20,7 @@ function Content(props) {
         <> <Link to={`/watch/${_id}`}>
             <div className="p-2">
                 <div className="w-full">
-                    <img className="rounded-xl w-full" src={thumbnailUrl} alt="" />
+                    <img className="rounded-xl w-full aspect-video" src={thumbnailUrl} alt="" />
                 </div>
                 <div className="flex my-2">
                     <div className="min-w-fit">

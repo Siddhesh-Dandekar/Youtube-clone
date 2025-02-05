@@ -21,18 +21,23 @@ function Header() {
     const [profileUrl, setProfileUrl] = useState('');
 
     const dispatch = useDispatch();
+    //This Function Toggles the Menu and Store the state in redux
     function togglesmenu() {
         dispatch(changeState());
     }
 
+    //Stores the searched Value in redux so it can be fetched by other component for displaying search related videos
     function handlesearch(){
         dispatch(searchinfo(searchbar));
     }
+
+    //To clear the search info
     function clearsearch(){
         dispatch(clearinfo(null))
         setSearchBar('')
     }
 
+    //Clears All the Credentials including Access Token in localStorage
     function signOut() {
         dispatch(cleardata());
         localStorage.removeItem('key');
@@ -40,6 +45,7 @@ function Header() {
     }
     const userinfo = useSelector(item => item.credential.data[0])
 
+    //Fetching Channel Details
     useEffect(() => {
         const channelfetch = async () => {
             if (userinfo.channelId) {
@@ -50,7 +56,7 @@ function Header() {
         channelfetch();
     },[userinfo.channelId])
 
-
+    //Create Channel function to allow user to Create his channel
     async function createChannel(event) {
         event.preventDefault();
         const accessToken = localStorage.getItem("key");

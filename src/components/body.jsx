@@ -9,7 +9,7 @@ function Body() {
     const [category, setCategory] = useState(null);
     const searchInfo = useSelector(x => x.search.data);
 
-    
+    //Used to Fetch Videos At Page Reloading
     useEffect(() => {
         const fetchVideos = async () => {
             const videosInfo = await fetch('http://localhost:5100/videos').then(data => data.json());
@@ -20,7 +20,8 @@ function Body() {
         }
         fetchVideos();
     },[]);
-    
+
+    //To show user Searched Results
     useEffect(() => {
         if (searchInfo) {
             const filtered = videoData.filter(x => x.title.toLowerCase().includes(searchInfo.toLowerCase()));
@@ -30,7 +31,7 @@ function Body() {
         }
     }, [searchInfo, videoData]);
 
-
+    //To show user filtered Results
     useEffect(() => {
         if (category) {
             const filtered = videoData.filter(x => x.title.toLowerCase().includes(category.toLowerCase()) || x.description.toLowerCase().includes(category.toLowerCase()));
@@ -134,8 +135,8 @@ function Body() {
                         <ul className="flex gap-2 text-sm select-none">
                             <li onClick={() => setCategory(null)} className={category == null ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>All</li>
                             <li onClick={() => setCategory("Music")} className={category == "Music" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Music</li>
-                            <li onClick={() => setCategory("Gaming")} className={category == "Gaming" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Gaming</li>
-                            <li onClick={() => setCategory("Food")} className={category == "Food" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Food</li>
+                            <li onClick={() => setCategory("Vlog")} className={category == "Vlog" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Vlog</li>
+                            <li onClick={() => setCategory("recipe")} className={category == "Food" ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md" : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}>Food</li>
 
                         </ul>
                     </div>

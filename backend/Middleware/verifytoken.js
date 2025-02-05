@@ -1,6 +1,8 @@
 import userModel from "../Model/user.model.js";
 import jwt from 'jsonwebtoken'
 
+
+//All protected Routes will go throw this Middleware on Each request to Ensure Valid Access
 function VerifyToken(req, res, next){
     console.log(req.headers)
     if(req.headers && req.headers.authorization && req.headers.authorization.split(" ")[0] == "JWT"){

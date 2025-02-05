@@ -6,6 +6,9 @@ function Microvideo(props) {
     const [channeldata, setChannelData] = useState('')
     const [videotitle , setVideoTitle] = useState(title);
 
+    //This Component is displayed while watching video in side there are Small Recommened Videos 
+    //To Reduce the Title and make sure it doesn't effect the UI
+    
     if(videotitle.length > 55){
         const UpdatedTitle = videotitle.slice(0, 50)+'...'
         setVideoTitle(UpdatedTitle)
@@ -22,7 +25,7 @@ function Microvideo(props) {
         <>
             <Link to={`/watch/${_id}`}><div className="flex w-full">
                 <div >
-                    <img className="rounded-lg" width="165" src={thumbnailUrl} alt="" />
+                    <img className="rounded-lg aspect-video" width="165" src={thumbnailUrl} alt="" />
                 </div>
                 <div className="pl-3 flex-1 leading-none">
                     <h6 className="lg:w-48 font-semibold text-sm leading-normal">{videotitle}</h6>

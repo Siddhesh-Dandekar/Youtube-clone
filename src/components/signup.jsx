@@ -8,6 +8,7 @@ function Signup() {
     const [ password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    //This Function Allows User to create his/her Account
     async function handleregister(event){
         event.preventDefault();
         const register = await fetch("http://localhost:5100/signup", {

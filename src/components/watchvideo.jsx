@@ -20,6 +20,8 @@ function Watchvideo() {
     const [comments, setComments] = useState([]);
     const [commentText, setCommentText] = useState('');
 
+    
+    //Fetching User Info before and if changes are made
     useEffect(() => {
         if (UserInfo && UserInfo.channelId) {
             const fetchChannel = async () => {
@@ -30,6 +32,7 @@ function Watchvideo() {
         }
     }, [UserInfo])
 
+    //Fetching Video information before and if url changes
     useEffect(() => {
         const fetchVideos = async () => {
             try {
@@ -62,6 +65,7 @@ function Watchvideo() {
         fetchVideos();
     }, [params, loading]);
 
+    //Fetching Video information 
     useEffect(() => {
         const fetchVideos = async () => {
             const videosInfo = await fetch(`http://localhost:5100/videos`).then(data => data.json());
@@ -72,6 +76,8 @@ function Watchvideo() {
         fetchVideos();
     }, [channelData])
 
+
+    //This function is used to handle Likes
     async function handleLikes() {
         console.log('likes')
         const accessToken = localStorage.getItem('key');
@@ -87,6 +93,8 @@ function Watchvideo() {
             setDislikeCount(liked.dislikes);
         }
     }
+
+    //This function is used to Handle dislikes basically if a person is already liked or not
     async function handleDislikes() {
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
@@ -102,6 +110,7 @@ function Watchvideo() {
         }
     }
 
+    //This function is used to Add comment
     async function handleComment() {
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
@@ -123,6 +132,7 @@ function Watchvideo() {
         setCommentText('')
     }
 
+    //This function is used to Delete Comment
     async function DeleteComment(id) {
         setLoading(true);
         const accessToken = localStorage.getItem('key')
@@ -152,7 +162,7 @@ function Watchvideo() {
         <>{videoData ? <div className="flex flex-col lg:flex-row w-full pt-14 p-2">
             <div className="w-full lg:w-5/6 mt-2 px-1 sm:px-3 lg:px-0 lg:ml-6 lg:mr-2 flex flex-col gap-3">
                 <div className="container">
-                    <iframe className="rounded-xl responsive-iframe" src={`https://www.youtube.com/embed/${videoData.videoUrl.split('/')[3]}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+                    <iframe className="rounded-xl responsive-iframe" src={`https://www.youtube.com/embed/${videoData.videoUrl.split('/')[3]}?autoplay=1`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
                 </div>
                 <h1 className="text-lg font-semibold">{videoData.title}</h1>
                 <div className="flex items-center justify-between">

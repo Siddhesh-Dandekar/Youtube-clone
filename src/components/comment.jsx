@@ -15,9 +15,10 @@ function Comment(props) {
     const [RandomLikes, setRandomLikes] = useState(0)
 
 
-
+    //Retreive User Details
     const UserInfo = useSelector(item => item.credential.data[0]);
 
+    //Fetching Channel info for displaying Comment assosiated to which Channel
     useEffect(() => {
         const fetchChannel = async () => {
             const channelInfo = await fetch(`http://localhost:5100/channel/${channelId}`).then(data => data.json());
@@ -29,6 +30,7 @@ function Comment(props) {
 
     }, [])
 
+    //This function is allows user to edit his comment
     async function EditComment() {
         const accessToken = localStorage.getItem('key')
         try {

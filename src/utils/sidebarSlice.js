@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+//This slice is used to store sidebar State
 const sidebarSlice = createSlice({
     name: 'sidebar',
     initialState: {

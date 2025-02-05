@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+//Creating Channel Schema for storing data in valid Structure
 const channelSchema = mongoose.Schema({
     channelName : {
         type: String,

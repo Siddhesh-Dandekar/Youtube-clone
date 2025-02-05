@@ -7,6 +7,7 @@ function CreateChannel(props) {
     const [description, setDescription] = useState('');
     const [profileUrl, setProfileUrl] = useState('');
 
+    //A Create Channel Component which User to create his channel
     async function createChannel(event) {
         event.preventDefault();
         const accessToken = localStorage.getItem("key");

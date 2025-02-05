@@ -3,6 +3,7 @@ import videoModel from "../Model/video.model.js";
 import channelModel from "../Model/channel.model.js";
 import mongoose from "mongoose";
 
+//This function is used to store new Video Details
 export async function uploadvideo(req, res) {
     const { title, thumbnailUrl, description, videoUrl } = req.body;
     const { _id } = req.user;
@@ -32,9 +33,10 @@ export async function uploadvideo(req, res) {
     }
 }
 
+//This function is used to Retrieve all Videos
 export async function fetchVideos(req, res) {
     try {
-        const videos = await videoModel.find();
+        const videos = await videoModel.find().sort({ uploadDate: -1 });
         return res.send(videos);
     }
     catch (err) {
@@ -42,7 +44,7 @@ export async function fetchVideos(req, res) {
     }
 }
 
-
+//This function is used to Retrieve Video by his Id
 export async function fetchVideoById(req, res) {
     const { id } = req.params;
     
@@ -61,7 +63,7 @@ export async function fetchVideoById(req, res) {
     }
 }
 
-
+//This function increament video views
 export async function addViews(req, res) {
     const { videoid } = req.params;
     try {
@@ -78,6 +80,7 @@ export async function addViews(req, res) {
     }
 }
 
+//This function add likes but we user has already liked it will Remove his like
 export async function addLikes(req, res) {
     const { videoid } = req.params;
     const { _id } = req.user;
@@ -116,6 +119,7 @@ export async function addLikes(req, res) {
     }
 }
 
+//This function add dislikes but it also check weather user has already liked or disliked video
 export async function addDislikes(req, res) {
     const { videoid } = req.params;
     const { _id } = req.user;
@@ -153,6 +157,7 @@ export async function addDislikes(req, res) {
     }
 }
 
+//This function Add Comments
 export async function AddComment(req, res){
     const { text , videoid } = req.body;
     const { channelId } = req.user;
@@ -171,6 +176,7 @@ export async function AddComment(req, res){
     }
 }
 
+//This function Delete Comments
 export async function DeleteComment(req, res){
     const { commentId , videoid} = req.body;
     const { channelId } = req.user;
@@ -190,6 +196,7 @@ export async function DeleteComment(req, res){
     }
 }
 
+//This function allows to Edit Comments
 export async function EditComment(req, res){
     const { commentId , videoid , Updatetext } =req.body;
     const { channelId } = req.user;
@@ -212,7 +219,7 @@ export async function EditComment(req, res){
 
 }
 
-
+//This function Delete Stored Video
 export async function DeleteVideo(req, res){
     const { videoid , channelid } = req.body;
     const { _id } = req.user;
@@ -233,6 +240,7 @@ export async function DeleteVideo(req, res){
     }
 }
 
+//This function Edit Existing Video
 export async function EditVideo(req, res){
     const { videoid, title, thumbnailUrl, description } = req.body;
     const { _id } = req.user;

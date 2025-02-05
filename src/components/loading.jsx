@@ -1,4 +1,6 @@
 function Loading(){
+
+  //Loading Component For lazy loading
     return(<div className='flex space-x-2 justify-center items-center bg-white h-screen dark:invert'>
               <svg className="w-12 h-12 text-gray-300 animate-spin" viewBox="0 0 64 64" fill="none"
                 xmlns="http://www.w3.org/2000/svg" width="24" height="24">

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+//Creating Video Schema for storing data in valid Structure
 const videoSchema = mongoose.Schema({
     title: {
         type: String,
@@ -18,8 +19,8 @@ const videoSchema = mongoose.Schema({
         required : true
     },
     channelId : {
-        type: mongoose.Schema.Types.ObjectId, // Change this to ObjectId
-        ref: 'channels', // Reference to the `channels` model
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'channels', 
         required: true
     },
     userId:{

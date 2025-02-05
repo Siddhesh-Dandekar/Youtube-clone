@@ -7,9 +7,11 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 function App() {
+  
   const dispatch = useDispatch()
   const location = useLocation();
 
+  //Redux Store is used to store User Details After Validating accessToken by server Side And maintaining that data across all Pages
   useEffect(() => {
     async function userValidation() {
       try {
@@ -46,9 +48,6 @@ function App() {
       <Header />
       <Outlet />
     </>
-    // <sidebarstatus.Provider value={{visible : sidebar}}>
-
-    // </sidebarstatus.Provider>
   )
 }
 

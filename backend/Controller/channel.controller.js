@@ -1,6 +1,8 @@
 import channelModel from "../Model/channel.model.js";
 import userModel from '../Model/user.model.js'
 
+
+//This Function Allows to store New Channel Details
 export async function createChannel(req, res) {
     try {
         const { channelName, description, channelProfile } = req.body;
@@ -29,6 +31,7 @@ export async function createChannel(req, res) {
 
 }
 
+//This Function allows to Fetch Channel Details
 export async function fetchChannel(req, res) {
     const channelId = req.params.id;
     try {
@@ -42,8 +45,7 @@ export async function fetchChannel(req, res) {
     }
 }
 
-
-
+//This function is used to Update Existing Channel Details
 export async function updateChannel(req, res) {
     try {
         const { channelName, channelProfile, channelBanner , description } = req.body;

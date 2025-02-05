@@ -8,6 +8,8 @@ import { lazy, Suspense } from 'react';
 import Loading from './components/loading.jsx';
 import Error404 from './components/error404.jsx';
 
+//Using Lazy Loading Hook For Smoother Experience
+
 const Body = lazy(() => import('./components/body.jsx'));
 const Watchvideo = lazy(() => import('./components/watchvideo.jsx'));
 const Channel = lazy(() => import('./components/channel.jsx'));
@@ -15,6 +17,8 @@ const Studio = lazy(() => import('./components/studio.jsx'));
 const Signup = lazy(() => import('./components/signup.jsx'));
 const Login = lazy(() => import('./components/login.jsx'));
 
+
+//Creating Router Path
 const appRouter = createBrowserRouter([
   {
     path: '/',

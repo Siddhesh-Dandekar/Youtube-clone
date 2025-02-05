@@ -10,6 +10,7 @@ function Login() {
     const [isSignIn, setIsSignIn] = useState(false);
 
 
+    //This function is used to allow user to Login 
     async function handlesiginin(event){
         event.preventDefault();
         const loginuserr = await fetch('http://localhost:5100/login', {

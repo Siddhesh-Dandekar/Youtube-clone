@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+//Error Component
 function Error404(){
     return (<>
     <main className="flex w-full pt-14 ">

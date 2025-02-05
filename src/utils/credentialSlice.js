@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+//Creating a Slice in which user Credentials will be Stored, fetched and Cleared
 const CredentialSlice = createSlice({
     name: 'credential',
     initialState: {

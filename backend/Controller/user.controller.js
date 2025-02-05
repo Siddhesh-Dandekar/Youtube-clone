@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt';
 
 
+//This function is used to register new user in the database
 export function registerUser(req, res) {
     const { username, email, password } = req.body;
     console.log(username, email, password);
@@ -35,7 +36,7 @@ export function registerUser(req, res) {
     }
 }
 
-
+//This function is used to verify user and Authorized him in return of Access Token
 export function loginUser(req, res) {
     const { email, password } = req.body;
     try {
@@ -61,7 +62,7 @@ export function loginUser(req, res) {
     }
 }
 
-
+//This function Fetch logged Used Information
 export function fetchUser(req, res) {
     return res.status(200).json(req.user)
 }

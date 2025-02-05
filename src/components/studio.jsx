@@ -26,9 +26,11 @@ function Studio() {
     const [updateDescription, setUpdateDescription]= useState(null)
 
 
+    //Fetching menu state
     const visiblestatus = useSelector(x => x.sidebar);
     const UserInfo = useSelector(x => x.credential.data[0])
 
+    //Fetching channel and videos information at first load and after updating 
     useEffect(() => {
         const ChannelFetch = async () => {
             const channelInfo = await fetch(`http://localhost:5100/channel/${UserInfo.channelId}`).then(data => data.json());
@@ -52,9 +54,15 @@ function Studio() {
     }, [UserInfo, loading]);
 
     const accessToken = localStorage.getItem('key');
+
+    //This function allows user to upload video
     async function uploadVideo(event) {
         event.preventDefault();
         try {
+            setLoading(true);
+            setTimeout(() => {
+                setLoading(false);
+            }, 5000);
             if (accessToken && accessToken !== undefined) {
                 const uploadVideo = await fetch('http://localhost:5100/upload', {
                     method: "POST",
@@ -72,6 +80,10 @@ function Studio() {
                 if (uploadVideo) {
                     alert('Video Uploaded Successfully');
                 }
+                setVideoTitle('');
+                setVideoUrl('');
+                setThumbnailUrl('');
+                setDescription('');
             }
         }
         catch (err) {
@@ -80,6 +92,7 @@ function Studio() {
 
     }
 
+    //This function allows user to update Channel
     async function updateChannel(event, updaterequest) {
         event.preventDefault();
         try {
@@ -141,6 +154,7 @@ function Studio() {
         }
     }
 
+    //This function allows user to Delete Video
     async function deleteVideo(id) {
         try {
             setLoading(true);
@@ -165,7 +179,8 @@ function Studio() {
             return console.log(err.message)
         }
     }
-
+    
+    //This function allows user to Edit Videos
     async function editVideo(event, obj) {
         const { _id, editTitle, editThumbnailUrl, editDescription } = obj;
         console.log(_id)
@@ -324,19 +339,19 @@ function Studio() {
                             <form action="#" className="w-full font-medium " onSubmit={(e) => uploadVideo(e)}>
                                 <label htmlFor="">Video Title</label>
                                 <br />
-                                <input onChange={(e) => setVideoTitle(e.target.value)} required type="text" className="border w-full mb-2" />
+                                <input onChange={(e) => setVideoTitle(e.target.value)} value={videoTitle} required type="text" className="border w-full mb-2" />
                                 <br />
                                 <label htmlFor="">Video Url</label>
                                 <br />
-                                <input onChange={(e) => setVideoUrl(e.target.value)} required type="url" className="border w-full mb-2" />
+                                <input onChange={(e) => setVideoUrl(e.target.value)} value={videoUrl} required type="url" className="border w-full mb-2" />
                                 <br />
                                 <label htmlFor="">Thumbnail Url</label>
                                 <br />
-                                <input onChange={(e) => setThumbnailUrl(e.target.value)} required type="url" className="border w-full mb-2" />
+                                <input onChange={(e) => setThumbnailUrl(e.target.value)} value={thumbnailUrl} required type="url" className="border w-full mb-2" />
                                 <br />
                                 <label htmlFor="">Description</label>
                                 <br />
-                                <textarea onChange={(e) => setDescription(e.target.value)} name="" rows="20" className="p-1 border w-full leading-none" id=""></textarea>
+                                <textarea onChange={(e) => setDescription(e.target.value)} value={description} name="" rows="20" className="p-1 border w-full leading-none" id=""></textarea>
                                 <br />
                                 <button type="submit" className="my-1 bg-gray-200 w-fit px-3 py-1 sm:text-base rounded-full">Upload</button>
                             </form>
