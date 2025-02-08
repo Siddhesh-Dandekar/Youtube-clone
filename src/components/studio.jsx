@@ -371,7 +371,7 @@ function Studio() {
                 {loading ? <div className="w-80 m-auto left-0 top-0 bottom-0 absolute rounded-lg right-0 bg-gray-100 border-gray-300 border-2 h-32">
                     <div className="flex flex-col gap-2 items-center h-full justify-center">
                         <span className="text-lg font-semibold">Updating...</span>
-                        <img src="../src/assets/loading.gif" className="mix-blend-darken" alt="" width="50" />
+                        <img src="../loading.gif" className="mix-blend-darken" alt="" width="50" />
                     </div>
                 </div> : ''}
             </div>

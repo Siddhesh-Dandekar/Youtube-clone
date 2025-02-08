@@ -94,7 +94,7 @@ function Header() {
             <nav className="px-4 gap-2 flex justify-between h-full items-center">
                 <div className="flex gap-1 items-center flex-grow">
                     <FontAwesomeIcon onClick={togglesmenu} className="h-4 w-4 rounded-full  hover:bg-gray-200 p-3" icon={faBars}></FontAwesomeIcon>
-                    <Link to="/"><img className="hidden sm:block" src="/src/assets/youtube.webp" alt="" width="122" height="56" /> <img width="34" height="34" src="https://img.icons8.com/fluency/48/youtube-play.png" className="sm:hidden" alt="youtube-play"/></Link>
+                    <Link to="/"><img className="hidden sm:block" src="/youtube.webp" alt="" width="122" height="56" /> <img width="34" height="34" src="https://img.icons8.com/fluency/48/youtube-play.png" className="sm:hidden" alt="youtube-play"/></Link>
                 </div>
                 <div className="flex justify-center items-center w-36 sm:w-auto flex-grow-[3] gap-2 h-full">
                     <div className="flex relative w-full sm:w-5/6 h-2/3">
@@ -113,7 +113,7 @@ function Header() {
                         :
                         <Link to='/login'>
                             <button className="flex items-center hover:bg-gray-100 text-blue-500 font-medium border border-gray-300 p-1 rounded-full sm:px-2">
-                                <img src="../src/assets/signin.png" alt="" className="rounded-full" height="24" width="24" />
+                                <img src="../signin.png" alt="" className="rounded-full" height="24" width="24" />
                                 <span className="hidden sm:block">Sign in</span>
                             </button>
                         </Link>}
