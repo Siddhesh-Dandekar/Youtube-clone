@@ -15,8 +15,8 @@ mongoose.connect('mongodb+srv://siddhesh0129:siddhesh@cluster0.ryx5j.mongodb.net
 app.listen(5100,() => {
     console.log("Server running on port 5100")
 })
-app.get('/',()=>{
-    return res.send('Hello')
+app.get('/',(req, res)=>{
+    return res.send('hello')
 })
 //Fetching connection Status
 const db = mongoose.connection;
