@@ -50,7 +50,7 @@ function Login() {
                             <br />
                             <label htmlFor="password">Password</label>
                             <br />
-                            <input type="password" required onChange={e => setPassword(e.target.value)} className="w-full rounded-sm border p-1 border-black mb-4" name="password" id="password" />
+                            <input type="password" minLength="8" required onChange={e => setPassword(e.target.value)} className="w-full rounded-sm border p-1 border-black mb-4" name="password" id="password" />
 
                             <p className="text-sm mb-5">Not your computer? Use Guest mode to sign in privately. <b className="text-blue-600 font-medium">Learn more about</b><br /> <Link to="/signup"><b className="hover:underline cursor-pointer">Don't have an account?</b></Link>   </p>
                             <button type="submit" className="text-white text-lg p-2 px-3 hover:bg-blue-600 rounded-full ml-auto font-medium bg-blue-700">Next</button>
