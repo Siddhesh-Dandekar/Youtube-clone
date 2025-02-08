@@ -16,7 +16,7 @@ function Channel() {
     useEffect(() => {
         const ChannelFetch = async () => {
             try {
-                const response = await fetch(`http://localhost:5100/channel/${channelId}`);
+                const response = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${channelId}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -25,7 +25,7 @@ function Channel() {
                 const updatedVideos = [];
                 for (let x of channelInfo.videos) {
                     try {
-                        const videoData = await fetch(`http://localhost:5100/video/${x}`).then(data => data.json())
+                        const videoData = await fetch(`https://youtube-clone-api-j322.onrender.com/video/${x}`).then(data => data.json())
                         updatedVideos.push(videoData);
                     }
                     catch (err) {
@@ -45,7 +45,7 @@ function Channel() {
 
     // async function fetchchannelVideo(videoid) {
     //     try {
-    //         const videoData = await fetch(`http://localhost:5100/video/${videoid}`).then(data => data.json())
+    //         const videoData = await fetch(`https://youtube-clone-api-j322.onrender.com/video/${videoid}`).then(data => data.json())
     //         channelVideos.push(videoData);
     //         console.log(channelVideos)
     //         setChannelVideos(channelVideos);

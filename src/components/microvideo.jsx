@@ -15,7 +15,7 @@ function Microvideo(props) {
     }
     useEffect(() => {
         const fetchChannel = async () => {
-            const channelInfo = await fetch(`http://localhost:5100/channel/${channelId}`).then(data => data.json());
+            const channelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${channelId}`).then(data => data.json());
             setChannelData(channelInfo);
         }
         fetchChannel();

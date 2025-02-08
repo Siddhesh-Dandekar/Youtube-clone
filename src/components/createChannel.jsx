@@ -12,7 +12,7 @@ function CreateChannel(props) {
         event.preventDefault();
         const accessToken = localStorage.getItem("key");
         if (accessToken !== "undefined" && accessToken) {
-            const newChannel = await fetch('http://localhost:5100/channel', {
+            const newChannel = await fetch('https://youtube-clone-api-j322.onrender.com/channel', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

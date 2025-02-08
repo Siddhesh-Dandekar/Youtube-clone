@@ -11,7 +11,7 @@ function Signup() {
     //This Function Allows User to create his/her Account
     async function handleregister(event){
         event.preventDefault();
-        const register = await fetch("http://localhost:5100/signup", {
+        const register = await fetch("https://youtube-clone-api-j322.onrender.com/signup", {
             method : "POST",
             headers : {
                 "Content-Type":"application/json",

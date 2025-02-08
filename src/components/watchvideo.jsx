@@ -25,7 +25,7 @@ function Watchvideo() {
     useEffect(() => {
         if (UserInfo && UserInfo.channelId) {
             const fetchChannel = async () => {
-                const channelInfo = await fetch(`http://localhost:5100/channel/${UserInfo.channelId}`).then(data => data.json());
+                const channelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${UserInfo.channelId}`).then(data => data.json());
                 setIsChannel(channelInfo);
             }
             fetchChannel();
@@ -36,21 +36,21 @@ function Watchvideo() {
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await fetch(`http://localhost:5100/video/${params.id}`);
+                const response = await fetch(`https://youtube-clone-api-j322.onrender.com/video/${params.id}`);
                 if (!response.ok) {
                     throw new error(response);
                 }
                 const videosInfo = await response.json();
                 if (videosInfo) {
                     setTimeout(() => {
-                        fetch(`http://localhost:5100/views/${videosInfo._id}`)
+                        fetch(`https://youtube-clone-api-j322.onrender.com/views/${videosInfo._id}`)
                     }, 2000)
                     setVideoData(videosInfo);
                     setLikeCount(videosInfo.likes);
                     setDislikeCount(videosInfo.dislikes);
                     setComments(videosInfo.comments);
                 }
-                const channelInfo = await fetch(`http://localhost:5100/channel/${videosInfo.channelId}`).then(data => data.json());
+                const channelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${videosInfo.channelId}`).then(data => data.json());
                 if (channelInfo) {
                     setChannelData(channelInfo);
                 }
@@ -68,7 +68,7 @@ function Watchvideo() {
     //Fetching Video information 
     useEffect(() => {
         const fetchVideos = async () => {
-            const videosInfo = await fetch(`http://localhost:5100/videos`).then(data => data.json());
+            const videosInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/videos`).then(data => data.json());
             const filteredArr = videosInfo.filter(x => x._id !== videoData._id);
             setSideVideos(filteredArr);
         }
@@ -82,7 +82,7 @@ function Watchvideo() {
         console.log('likes')
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
-            const liked = await fetch(`http://localhost:5100/likes/${videoData._id}`, {
+            const liked = await fetch(`https://youtube-clone-api-j322.onrender.com/likes/${videoData._id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +98,7 @@ function Watchvideo() {
     async function handleDislikes() {
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
-            const liked = await fetch(`http://localhost:5100/dislikes/${videoData._id}`, {
+            const liked = await fetch(`https://youtube-clone-api-j322.onrender.com/dislikes/${videoData._id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -114,7 +114,7 @@ function Watchvideo() {
     async function handleComment() {
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
-            const CommentInfo = await fetch(`http://localhost:5100/comment`, {
+            const CommentInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/comment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -138,7 +138,7 @@ function Watchvideo() {
         const accessToken = localStorage.getItem('key')
         try {
             if (accessToken && accessToken !== undefined) {
-                const Deleted = await fetch('http://localhost:5100/comment/delete', {
+                const Deleted = await fetch('https://youtube-clone-api-j322.onrender.com/comment/delete', {
                     method: "DELETE",
                     headers: {
                         "Content-Type": 'application/json',
