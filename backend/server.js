@@ -9,7 +9,7 @@ import videoRoutes from './Routes/video.routes.js';
 const app = new express();
 
 //Establishing Connection between server and Database
-mongoose.connect('mongodb://localhost:27017/youtube')
+mongoose.connect('mongodb+srv://siddhesh0129:Siddhesh@cluster0.ryx5j.mongodb.net/youtube')
 
 //Running Server on Port 5100
 app.listen(5100,() => {
