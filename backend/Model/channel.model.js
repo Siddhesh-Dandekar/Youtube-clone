@@ -20,7 +20,7 @@ const channelSchema = mongoose.Schema({
     channelProfile:{
         type: String,
         required:false,
-        default : "https://yt3.ggpht.com/RAnCvom2Cnxn5g5xe1Vz5T4S9167TWv18cz2MTUu1hXv_tNZ-h2b34RoWPQqtAhvwXdgDijE=s108-c-k-c0x00ffffff-no-rj" 
+        default : "https://img.icons8.com/color/240/circled-user-male-skin-type-1-2--v1.png" 
     },
     channelBanner: {
         type: String,

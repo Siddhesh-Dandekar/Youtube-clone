@@ -21,7 +21,7 @@ function CreateChannel(props) {
                 body: JSON.stringify({
                     channelName: channelName,
                     description: description,
-                    channelProfile: profileUrl || "https://img.icons8.com/color/96/circled-user-male-skin-type-1-2--v1.png"
+                    channelProfile: profileUrl || "https://img.icons8.com/color/240/circled-user-male-skin-type-1-2--v1.png"
                 })
             }).then(data => data.json())
 
