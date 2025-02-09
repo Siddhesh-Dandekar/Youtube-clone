@@ -33,13 +33,13 @@ function Studio() {
     //Fetching channel and videos information at first load and after updating 
     useEffect(() => {
         const ChannelFetch = async () => {
-            const channelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${UserInfo.channelId}`).then(data => data.json());
+            const channelInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/channel/${UserInfo.channelId}`).then(data => data.json());
             setChannelDetails(channelInfo);
             const updatedVideos = [];
             if (channelInfo.videos) {
                 for (let x of channelInfo.videos) {
                     try {
-                        const videoData = await fetch(`https://youtube-clone-api-j322.onrender.com/video/${x}`).then(data => data.json());
+                        const videoData = await fetch(`https://youtube-clone-api-seven.vercel.app/video/${x}`).then(data => data.json());
                         updatedVideos.push(videoData);
                     }
                     catch (err) {
@@ -64,7 +64,7 @@ function Studio() {
                 setLoading(false);
             }, 5000);
             if (accessToken && accessToken !== undefined) {
-                const uploadVideo = await fetch('https://youtube-clone-api-j322.onrender.com/upload', {
+                const uploadVideo = await fetch('https://youtube-clone-api-seven.vercel.app/upload', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -101,7 +101,7 @@ function Studio() {
                 setLoading(false);
             }, 5000);
             if (updaterequest == "Name" && accessToken) {
-                const updateChannelInfo = await fetch('https://youtube-clone-api-j322.onrender.com/channel/update', {
+                const updateChannelInfo = await fetch('https://youtube-clone-api-seven.vercel.app/channel/update', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -113,7 +113,7 @@ function Studio() {
                 }).then(data => data.json())
             }
             if (updaterequest == "Banner" && accessToken) {
-                const updateChannelInfo = await fetch('https://youtube-clone-api-j322.onrender.com/channel/update', {
+                const updateChannelInfo = await fetch('https://youtube-clone-api-seven.vercel.app/channel/update', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -125,7 +125,7 @@ function Studio() {
                 }).then(data => data.json())
             }
             if (updaterequest == "Profile" && accessToken) {
-                const updateChanneIInfo = await fetch('https://youtube-clone-api-j322.onrender.com/channel/update', {
+                const updateChanneIInfo = await fetch('https://youtube-clone-api-seven.vercel.app/channel/update', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -137,7 +137,7 @@ function Studio() {
                 }).then(data => data.json())
             }
             if (updaterequest == "Description" && accessToken) {
-                const updateChanneIInfo = await fetch('https://youtube-clone-api-j322.onrender.com/channel/update', {
+                const updateChanneIInfo = await fetch('https://youtube-clone-api-seven.vercel.app/channel/update', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -162,7 +162,7 @@ function Studio() {
                 setLoading(false);
             }, 5000);
             if (accessToken && accessToken !== undefined) {
-                const DeleteVideo = await fetch('https://youtube-clone-api-j322.onrender.com/video/delete', {
+                const DeleteVideo = await fetch('https://youtube-clone-api-seven.vercel.app/video/delete', {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
@@ -191,7 +191,7 @@ function Studio() {
                 setLoading(false);
             }, 3000);
             if (accessToken && accessToken !== undefined) {
-                const EditVideo = await fetch('https://youtube-clone-api-j322.onrender.com/video/edit', {
+                const EditVideo = await fetch('https://youtube-clone-api-seven.vercel.app/video/edit', {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",

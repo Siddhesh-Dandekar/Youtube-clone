@@ -12,7 +12,7 @@ function Body() {
     //Used to Fetch Videos At Page Reloading
     useEffect(() => {
         const fetchVideos = async () => {
-            const videosInfo = await fetch('https://youtube-clone-api-j322.onrender.com/videos').then(data => data.json());
+            const videosInfo = await fetch('https://youtube-clone-api-seven.vercel.app/videos').then(data => data.json());
             if(videosInfo){
                 setVideoData(videosInfo);
                 setFilteredData(videosInfo);

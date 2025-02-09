@@ -49,7 +49,7 @@ function Header() {
     useEffect(() => {
         const channelfetch = async () => {
             if (userinfo.channelId) {
-                const ChannelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${userinfo.channelId}`).then(data => data.json());
+                const ChannelInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/channel/${userinfo.channelId}`).then(data => data.json());
                 setChannelDetails(ChannelInfo)
             }
         }
@@ -61,7 +61,7 @@ function Header() {
         event.preventDefault();
         const accessToken = localStorage.getItem("key");
         if (accessToken !== "undefined" && accessToken) {
-            const newChannel = await fetch('https://youtube-clone-api-j322.onrender.com/channel', {
+            const newChannel = await fetch('https://youtube-clone-api-seven.vercel.app/channel', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

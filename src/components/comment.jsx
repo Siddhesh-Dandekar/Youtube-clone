@@ -21,7 +21,7 @@ function Comment(props) {
     //Fetching Channel info for displaying Comment assosiated to which Channel
     useEffect(() => {
         const fetchChannel = async () => {
-            const channelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${channelId}`).then(data => data.json());
+            const channelInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/channel/${channelId}`).then(data => data.json());
             setChannelData(channelInfo);
         }
         fetchChannel();
@@ -35,7 +35,7 @@ function Comment(props) {
         const accessToken = localStorage.getItem('key')
         try {
             if (accessToken && accessToken !== undefined) {
-                const Edit = await fetch('https://youtube-clone-api-j322.onrender.com/comment/edit', {
+                const Edit = await fetch('https://youtube-clone-api-seven.vercel.app/comment/edit', {
                     method: "PUT",
                     headers: {
                         "Content-Type": 'application/json',

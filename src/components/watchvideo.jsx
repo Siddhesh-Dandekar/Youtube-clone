@@ -25,7 +25,7 @@ function Watchvideo() {
     useEffect(() => {
         if (UserInfo && UserInfo.channelId) {
             const fetchChannel = async () => {
-                const channelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${UserInfo.channelId}`).then(data => data.json());
+                const channelInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/channel/${UserInfo.channelId}`).then(data => data.json());
                 setIsChannel(channelInfo);
             }
             fetchChannel();
@@ -36,21 +36,21 @@ function Watchvideo() {
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await fetch(`https://youtube-clone-api-j322.onrender.com/video/${params.id}`);
+                const response = await fetch(`https://youtube-clone-api-seven.vercel.app/video/${params.id}`);
                 if (!response.ok) {
                     throw new error(response);
                 }
                 const videosInfo = await response.json();
                 if (videosInfo) {
                     setTimeout(() => {
-                        fetch(`https://youtube-clone-api-j322.onrender.com/views/${videosInfo._id}`)
+                        fetch(`https://youtube-clone-api-seven.vercel.app/views/${videosInfo._id}`)
                     }, 2000)
                     setVideoData(videosInfo);
                     setLikeCount(videosInfo.likes);
                     setDislikeCount(videosInfo.dislikes);
                     setComments(videosInfo.comments);
                 }
-                const channelInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/channel/${videosInfo.channelId}`).then(data => data.json());
+                const channelInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/channel/${videosInfo.channelId}`).then(data => data.json());
                 if (channelInfo) {
                     setChannelData(channelInfo);
                 }
@@ -68,7 +68,7 @@ function Watchvideo() {
     //Fetching Video information 
     useEffect(() => {
         const fetchVideos = async () => {
-            const videosInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/videos`).then(data => data.json());
+            const videosInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/videos`).then(data => data.json());
             const filteredArr = videosInfo.filter(x => x._id !== videoData._id);
             setSideVideos(filteredArr);
         }
@@ -82,7 +82,7 @@ function Watchvideo() {
         console.log('likes')
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
-            const liked = await fetch(`https://youtube-clone-api-j322.onrender.com/likes/${videoData._id}`, {
+            const liked = await fetch(`https://youtube-clone-api-seven.vercel.app/likes/${videoData._id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +98,7 @@ function Watchvideo() {
     async function handleDislikes() {
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
-            const liked = await fetch(`https://youtube-clone-api-j322.onrender.com/dislikes/${videoData._id}`, {
+            const liked = await fetch(`https://youtube-clone-api-seven.vercel.app/dislikes/${videoData._id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -114,7 +114,7 @@ function Watchvideo() {
     async function handleComment() {
         const accessToken = localStorage.getItem('key');
         if (accessToken && accessToken !== undefined) {
-            const CommentInfo = await fetch(`https://youtube-clone-api-j322.onrender.com/comment`, {
+            const CommentInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/comment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -138,7 +138,7 @@ function Watchvideo() {
         const accessToken = localStorage.getItem('key')
         try {
             if (accessToken && accessToken !== undefined) {
-                const Deleted = await fetch('https://youtube-clone-api-j322.onrender.com/comment/delete', {
+                const Deleted = await fetch('https://youtube-clone-api-seven.vercel.app/comment/delete', {
                     method: "DELETE",
                     headers: {
                         "Content-Type": 'application/json',
