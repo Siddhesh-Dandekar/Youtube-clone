@@ -12,7 +12,7 @@ function CreateChannel(props) {
         event.preventDefault();
         const accessToken = localStorage.getItem("key");
         if (accessToken !== "undefined" && accessToken) {
-            const newChannel = await fetch('https://youtube-clone-api-seven.vercel.app/channel', {
+            const newChannel = await fetch(`${import.meta.env.VITE_API_URL}/channel`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

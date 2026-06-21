@@ -11,7 +11,7 @@ function Signup() {
     //This Function Allows User to create his/her Account
     async function handleregister(event){
         event.preventDefault();
-        const register = await fetch("https://youtube-clone-api-seven.vercel.app/signup", {
+        const register = await fetch(`${import.meta.env.VITE_API_URL}/signup`, {
             method : "POST",
             headers : {
                 "Content-Type":"application/json",

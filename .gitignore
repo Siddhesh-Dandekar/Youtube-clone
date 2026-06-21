@@ -7,10 +7,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build
 dist
 dist-ssr
 *.local
+
+# Environment variables (NEVER commit)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +32,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Cache / deploy
+.cache/
+.vercel
+.netlify
+
+# Claude Code local settings
+.claude/

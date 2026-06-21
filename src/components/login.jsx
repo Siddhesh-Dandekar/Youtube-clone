@@ -13,7 +13,7 @@ function Login() {
     //This function is used to allow user to Login 
     async function handlesiginin(event){
         event.preventDefault();
-        const loginuserr = await fetch('https://youtube-clone-api-seven.vercel.app/login', {
+        const loginuserr = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
             method : "POST",
             headers : {
                 "Content-Type":"application/json",

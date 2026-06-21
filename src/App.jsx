@@ -18,7 +18,7 @@ function App() {
         console.log('hello');
         const accessToken = localStorage.getItem('key'); // make sure to retrieve the accessToken
         if (accessToken !== "undefined" && accessToken) {
-          const response = await fetch("https://youtube-clone-api-seven.vercel.app/validuser", {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/validuser`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

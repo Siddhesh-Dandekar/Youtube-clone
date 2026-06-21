@@ -10,7 +10,7 @@ function Content(props) {
     //Retrive ChannelInformation who uploaded that video
     useEffect(() => {
         const fetchChannel = async() => {
-            const channelInfo = await fetch(`https://youtube-clone-api-seven.vercel.app/channel/${channelId}`).then(data => data.json());
+            const channelInfo = await fetch(`${import.meta.env.VITE_API_URL}/channel/${channelId}`).then(data => data.json());
             setChannelData(channelInfo);
         } 
         fetchChannel();
