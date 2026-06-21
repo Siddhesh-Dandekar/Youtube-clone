@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBars, faMicrophone, faVideo, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faBars, faMicrophone, faVideo, faMoon, faSun, faDesktop, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,13 @@ import { cleardata } from "../utils/credentialSlice.js";
 import { clearinfo, searchinfo } from "../utils/searchSlice.js";
 import { apiFetch, clearToken } from "../utils/api.js";
 import { relativeDate } from "../utils/format.js";
-import { getInitialTheme, toggleTheme } from "../utils/theme.js";
+import { applyTheme, getPreference, resolveTheme, setPreference, subscribeToSystem } from "../utils/theme.js";
+
+const APPEARANCE_OPTIONS = [
+    { key: 'system', label: 'Use device theme', icon: faDesktop },
+    { key: 'dark', label: 'Dark theme', icon: faMoon },
+    { key: 'light', label: 'Light theme', icon: faSun },
+];
 
 function Header() {
     const navigate = useNavigate();
@@ -26,10 +32,17 @@ function Header() {
     const [profileUrl, setProfileUrl] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const [theme, setTheme] = useState(() => getInitialTheme());
+    const [themePref, setThemePref] = useState(() => getPreference());
+    const [appearanceOpen, setAppearanceOpen] = useState(false);
 
-    function handleToggleTheme() {
-        setTheme(prev => toggleTheme(prev));
+    useEffect(() => {
+        if (themePref !== 'system') return;
+        return subscribeToSystem(() => applyTheme(resolveTheme('system')));
+    }, [themePref]);
+
+    function changeAppearance(pref) {
+        setThemePref(pref);
+        setPreference(pref);
     }
 
     function togglesmenu() {
@@ -242,13 +255,33 @@ function Header() {
                 <Link to="/channel/studio" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Youtube Studio</Link>
                 <Link to="/subscriptions" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Memberships</Link>
                 <div className="w-full border-t-2 border-gray-200 dark:border-neutral-800 border-solid" />
-                <button onClick={handleToggleTheme} className="flex items-center justify-between px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 text-left">
+                <button onClick={() => setAppearanceOpen(prev => !prev)} aria-expanded={appearanceOpen} className="flex items-center justify-between px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 text-left">
                     <span className="flex items-center gap-2">
-                        <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
+                        <FontAwesomeIcon icon={APPEARANCE_OPTIONS.find(o => o.key === themePref)?.icon || faDesktop} />
                         Appearance
                     </span>
-                    <span className="text-xs text-gray-500 dark:text-neutral-400">{theme === 'dark' ? 'Dark' : 'Light'}</span>
+                    <span className="text-xs text-gray-500 dark:text-neutral-400">{APPEARANCE_OPTIONS.find(o => o.key === themePref)?.label || 'Use device theme'}</span>
                 </button>
+                {appearanceOpen ? (
+                    <div role="radiogroup" aria-label="Appearance" className="px-2 pb-2">
+                        {APPEARANCE_OPTIONS.map(option => {
+                            const active = themePref === option.key;
+                            return (
+                                <button
+                                    key={option.key}
+                                    role="radio"
+                                    aria-checked={active}
+                                    onClick={() => changeAppearance(option.key)}
+                                    className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 ${active ? 'font-semibold' : ''}`}
+                                >
+                                    <FontAwesomeIcon icon={option.icon} className="w-4" />
+                                    <span>{option.label}</span>
+                                    {active ? <FontAwesomeIcon icon={faCheck} className="ml-auto text-xs" /> : null}
+                                </button>
+                            );
+                        })}
+                    </div>
+                ) : null}
                 <Link to="/settings" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Settings</Link>
                 <Link to="/help" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Help</Link>
                 <Link to="/feedback" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Feedback</Link>

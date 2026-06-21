@@ -7,9 +7,9 @@ import appStore from './utils/configureStore.js';
 import { lazy, Suspense } from 'react';
 import Loading from './components/loading.jsx';
 import Error404 from './components/error404.jsx';
-import { applyTheme, getInitialTheme } from './utils/theme.js';
+import { applyTheme, getPreference, resolveTheme } from './utils/theme.js';
 
-applyTheme(getInitialTheme());
+applyTheme(resolveTheme(getPreference()));
 
 //Using Lazy Loading Hook For Smoother Experience
 
