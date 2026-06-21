@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBars, faMicrophone, faVideo, faMoon, faSun, faDesktop, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faBars, faMicrophone, faVideo, faMoon, faSun, faDesktop, faCheck, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +34,7 @@ function Header() {
     const [error, setError] = useState('');
     const [themePref, setThemePref] = useState(() => getPreference());
     const [appearanceOpen, setAppearanceOpen] = useState(false);
+    const [anonMenuOpen, setAnonMenuOpen] = useState(false);
 
     useEffect(() => {
         if (themePref !== 'system') return;
@@ -188,12 +189,26 @@ function Header() {
                             <img src={channelDetails ? channelDetails.channelProfile : "https://img.icons8.com/color/32/test-account.png"} className="rounded-full" height="34" width="34" alt="Profile" />
                         </button>
                     </> : (
-                        <Link to='/login'>
-                            <button className="flex items-center hover:bg-gray-100 text-blue-500 font-medium border border-gray-300 p-1 rounded-full sm:px-2">
-                                <img src="/signin.png" alt="" className="rounded-full" height="24" width="24" />
-                                <span className="hidden sm:block">Sign in</span>
+                        <>
+                            <Link to='/login'>
+                                <button className="flex items-center hover:bg-gray-100 dark:hover:bg-neutral-800 text-blue-500 font-medium border border-gray-300 dark:border-neutral-700 p-1 rounded-full sm:px-2">
+                                    <img src="/signin.png" alt="" className="rounded-full" height="24" width="24" />
+                                    <span className="hidden sm:block">Sign in</span>
+                                </button>
+                            </Link>
+                            <button
+                                onClick={() => {
+                                    setAnonMenuOpen(prev => !prev);
+                                    setAppearanceOpen(false);
+                                    setNotificationOpen(false);
+                                }}
+                                aria-label="Settings menu"
+                                aria-expanded={anonMenuOpen}
+                                className="h-10 w-10 flex items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-neutral-800 dark:text-white"
+                            >
+                                <FontAwesomeIcon icon={faEllipsisVertical} />
                             </button>
-                        </Link>
+                        </>
                     )}
                 </div>
             </nav>
@@ -223,6 +238,51 @@ function Header() {
                         </button>
                     )) : <p className="py-8 text-center text-gray-500">No notifications yet.</p>}
                 </div>
+            </div>
+        ) : null}
+
+        {anonMenuOpen && !userinfo.validuser ? (
+            <div className="fixed right-4 top-14 z-20 w-64 rounded-md border border-gray-100 bg-white p-2 text-sm shadow-md dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
+                <Link to="/login" onClick={() => setAnonMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800">
+                    <img src="/signin.png" alt="" width="20" height="20" className="rounded-full" />
+                    <span>Sign in</span>
+                </Link>
+                <div className="my-1 border-t border-gray-100 dark:border-neutral-800" />
+                <button
+                    onClick={() => setAppearanceOpen(prev => !prev)}
+                    aria-expanded={appearanceOpen}
+                    className="flex w-full items-center justify-between px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 text-left"
+                >
+                    <span className="flex items-center gap-2">
+                        <FontAwesomeIcon icon={APPEARANCE_OPTIONS.find(o => o.key === themePref)?.icon || faDesktop} />
+                        Appearance
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-neutral-400">{APPEARANCE_OPTIONS.find(o => o.key === themePref)?.label || 'Use device theme'}</span>
+                </button>
+                {appearanceOpen ? (
+                    <div role="radiogroup" aria-label="Appearance" className="px-2 pb-2">
+                        {APPEARANCE_OPTIONS.map(option => {
+                            const active = themePref === option.key;
+                            return (
+                                <button
+                                    key={option.key}
+                                    role="radio"
+                                    aria-checked={active}
+                                    onClick={() => changeAppearance(option.key)}
+                                    className={`flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-gray-100 dark:hover:bg-neutral-800 ${active ? 'font-semibold' : ''}`}
+                                >
+                                    <FontAwesomeIcon icon={option.icon} className="w-4" />
+                                    <span>{option.label}</span>
+                                    {active ? <FontAwesomeIcon icon={faCheck} className="ml-auto text-xs" /> : null}
+                                </button>
+                            );
+                        })}
+                    </div>
+                ) : null}
+                <div className="my-1 border-t border-gray-100 dark:border-neutral-800" />
+                <Link to="/settings" onClick={() => setAnonMenuOpen(false)} className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800">Settings</Link>
+                <Link to="/help" onClick={() => setAnonMenuOpen(false)} className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800">Help</Link>
+                <Link to="/feedback" onClick={() => setAnonMenuOpen(false)} className="block px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800">Send feedback</Link>
             </div>
         ) : null}
 
