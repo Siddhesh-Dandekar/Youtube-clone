@@ -4,7 +4,7 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { changeState } from "../utils/sidebarSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cleardata } from "../utils/credentialSlice.js";
 import { clearinfo, searchinfo } from "../utils/searchSlice.js";
 import { apiFetch, clearToken } from "../utils/api.js";
@@ -35,6 +35,48 @@ function Header() {
     const [themePref, setThemePref] = useState(() => getPreference());
     const [appearanceOpen, setAppearanceOpen] = useState(false);
     const [anonMenuOpen, setAnonMenuOpen] = useState(false);
+
+    const notificationBtnRef = useRef(null);
+    const notificationPanelRef = useRef(null);
+    const profileBtnRef = useRef(null);
+    const profilePanelRef = useRef(null);
+    const anonBtnRef = useRef(null);
+    const anonPanelRef = useRef(null);
+
+    function closeAllMenus() {
+        setNotificationOpen(false);
+        setProfileModel(false);
+        setAnonMenuOpen(false);
+        setAppearanceOpen(false);
+    }
+
+    useEffect(() => {
+        function onPointerDown(event) {
+            const target = event.target;
+            const inside = ref => ref.current && ref.current.contains(target);
+            if (notificationOpen && !inside(notificationPanelRef) && !inside(notificationBtnRef)) {
+                setNotificationOpen(false);
+            }
+            if (profileModel && !inside(profilePanelRef) && !inside(profileBtnRef)) {
+                setProfileModel(false);
+                setAppearanceOpen(false);
+            }
+            if (anonMenuOpen && !inside(anonPanelRef) && !inside(anonBtnRef)) {
+                setAnonMenuOpen(false);
+                setAppearanceOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', onPointerDown);
+        return () => document.removeEventListener('mousedown', onPointerDown);
+    }, [notificationOpen, profileModel, anonMenuOpen]);
+
+    useEffect(() => {
+        function onKey(event) {
+            if (event.key === 'Escape') closeAllMenus();
+        }
+        document.addEventListener('keydown', onKey);
+        return () => document.removeEventListener('keydown', onKey);
+    }, []);
 
     useEffect(() => {
         if (themePref !== 'system') return;
@@ -181,11 +223,11 @@ function Header() {
                                 <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white p-3" icon={faVideo} />
                             </Link>
                         ) : null}
-                        <button onClick={toggleNotifications} className="relative h-10 w-10 hidden sm:flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white" aria-label="Notifications">
+                        <button ref={notificationBtnRef} onClick={toggleNotifications} className="relative h-10 w-10 hidden sm:flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white" aria-label="Notifications">
                             <FontAwesomeIcon icon={faBell} />
                             {notifications.unread ? <span className="absolute -right-1 -top-1 rounded-full bg-red-600 px-1.5 text-[0.65rem] text-white">{notifications.unread}</span> : null}
                         </button>
-                        <button onClick={() => { setProfileModel(!profileModel); setNotificationOpen(false); }} aria-label="Open profile menu">
+                        <button ref={profileBtnRef} onClick={() => { setProfileModel(!profileModel); setNotificationOpen(false); setAppearanceOpen(false); }} aria-label="Open profile menu">
                             <img src={channelDetails ? channelDetails.channelProfile : "https://img.icons8.com/color/32/test-account.png"} className="rounded-full" height="34" width="34" alt="Profile" />
                         </button>
                     </> : (
@@ -197,6 +239,7 @@ function Header() {
                                 </button>
                             </Link>
                             <button
+                                ref={anonBtnRef}
                                 onClick={() => {
                                     setAnonMenuOpen(prev => !prev);
                                     setAppearanceOpen(false);
@@ -221,7 +264,7 @@ function Header() {
         ) : null}
 
         {notificationOpen ? (
-            <div className="fixed right-14 top-14 z-20 w-80 rounded-md border border-gray-100 bg-white p-3 text-sm shadow-md dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
+            <div ref={notificationPanelRef} className="fixed right-14 top-14 z-20 w-80 rounded-md border border-gray-100 bg-white p-3 text-sm shadow-md dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
                 <div className="mb-2 flex items-center justify-between">
                     <h2 className="font-semibold">Notifications</h2>
                     <button className="text-xs text-blue-600" onClick={loadNotifications}>Refresh</button>
@@ -242,7 +285,7 @@ function Header() {
         ) : null}
 
         {anonMenuOpen && !userinfo.validuser ? (
-            <div className="fixed right-4 top-14 z-20 w-64 rounded-md border border-gray-100 bg-white p-2 text-sm shadow-md dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
+            <div ref={anonPanelRef} className="fixed right-4 top-14 z-20 w-64 rounded-md border border-gray-100 bg-white p-2 text-sm shadow-md dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
                 <Link to="/login" onClick={() => setAnonMenuOpen(false)} className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800">
                     <img src="/signin.png" alt="" width="20" height="20" className="rounded-full" />
                     <span>Sign in</span>
@@ -287,7 +330,7 @@ function Header() {
         ) : null}
 
         {profileModel ? (
-            <div className="bg-white rounded-md pt-4 pb-2 shadow-md border flex flex-col gap-2 text-sm border-gray-100 fixed z-20 right-16 top-2 dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
+            <div ref={profilePanelRef} className="bg-white rounded-md pt-4 pb-2 shadow-md border flex flex-col gap-2 text-sm border-gray-100 fixed z-20 right-16 top-2 dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
                 {userinfo.channelId ? (
                     <div className="flex px-3 gap-3 mr-8">
                         <img src={channelDetails ? channelDetails.channelProfile : "https://img.icons8.com/color/32/test-account.png"} className="rounded-full" height="34" width="34" alt="Channel avatar" />
