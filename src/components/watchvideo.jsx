@@ -246,7 +246,7 @@ function Watchvideo() {
                             allowFullScreen
                         />
                     </div>
-                    <h1 className="text-lg font-semibold">{videoData.title}</h1>
+                    <h1 className="text-lg font-semibold dark:text-white">{videoData.title}</h1>
                     <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
                         <div className="flex gap-2 items-center sm:gap-4">
                             <img src={channelData.channelProfile} className="rounded-full" height="34" width="34" alt={`${channelData.channelName} avatar`} />
@@ -261,39 +261,39 @@ function Watchvideo() {
                                     <button className="text-white text-xs sm:text-sm font-medium bg-black p-2 max-h-fit sm:px-4 rounded-3xl">View Channel</button>
                                 </Link>
                             ) : (
-                                <button onClick={handleSubscribe} className={`text-xs sm:text-sm font-medium p-2 max-h-fit sm:px-4 rounded-3xl ${subscribed ? 'bg-gray-200 text-black' : 'bg-black text-white'}`}>
+                                <button onClick={handleSubscribe} className={`text-xs sm:text-sm font-medium p-2 max-h-fit sm:px-4 rounded-3xl ${subscribed ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-red-600 text-white hover:bg-red-700'}`}>
                                     {subscribed ? 'Subscribed' : 'Subscribe'}
                                 </button>
                             )}
                         </div>
 
                         <div className="flex flex-wrap gap-2 min-w-fit">
-                            <div className="flex items-center bg-slate-100 rounded-3xl text-sm font-medium">
-                                <button onClick={handleLikes} disabled={!UserInfo.validuser} className="flex rounded-s-3xl border-r px-2 items-center bg-gray-100 hover:bg-gray-200 h-full disabled:opacity-50">
+                            <div className="flex items-center bg-slate-100 dark:bg-neutral-800 rounded-3xl text-sm font-medium">
+                                <button onClick={handleLikes} disabled={!UserInfo.validuser} className="flex rounded-s-3xl border-r border-gray-300 dark:border-neutral-700 px-2 items-center bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white h-full disabled:opacity-50">
                                     <img width="20" height="20" className="mr-1" src="https://img.icons8.com/windows/20/thumb-up.png" alt="" />
                                     <span>{compactNumber(likeCount)}</span>
                                 </button>
-                                <button onClick={handleDislikes} disabled={!UserInfo.validuser} className="flex rounded-e-3xl items-center px-2 bg-gray-100 hover:bg-gray-200 h-full disabled:opacity-50">
+                                <button onClick={handleDislikes} disabled={!UserInfo.validuser} className="flex rounded-e-3xl items-center px-2 bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white h-full disabled:opacity-50">
                                     <img width="20" height="20" className="mr-1" src="https://img.icons8.com/windows/20/thumbs-down.png" alt="" />
                                     <span>{compactNumber(dislikeCount)}</span>
                                 </button>
                             </div>
-                            <button onClick={handleShare} className="sm:flex items-center text-sm font-medium bg-gray-100 hover:bg-gray-200 px-3 rounded-3xl">Share</button>
-                            <a href={videoData.videoUrl} target="_blank" rel="noreferrer" className="hidden xl:flex items-center text-sm font-medium bg-gray-100 hover:bg-gray-200 px-3 rounded-3xl">Open</a>
-                            <button onClick={handleWatchLater} className="flex items-center text-sm font-medium bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-3xl">Watch later</button>
+                            <button onClick={handleShare} className="sm:flex items-center text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white px-3 rounded-3xl">Share</button>
+                            <a href={videoData.videoUrl} target="_blank" rel="noreferrer" className="hidden xl:flex items-center text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white px-3 rounded-3xl">Open</a>
+                            <button onClick={handleWatchLater} className="flex items-center text-sm font-medium bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white px-3 py-2 rounded-3xl">Watch later</button>
                         </div>
                     </div>
-                    <div className="rounded-xl bg-gray-100">
+                    <div className="rounded-xl bg-gray-100 dark:bg-neutral-800 dark:text-white">
                         <div className="py-2 text-sm px-3">
-                            <h2 className="text-sm font-semibold">{compactNumber(videoData.views)} views - {relativeDate(videoData.uploadDate)}</h2>
+                            <h2 className="text-sm font-semibold">{compactNumber(videoData.views)} views · {relativeDate(videoData.uploadDate)}</h2>
                             <p>{videoData.description}</p>
                         </div>
                     </div>
                     <div className="mt-4">
                         <div className="flex gap-2 items-center">
-                            <span className="text-lg mr-5 font-bold">{comments.length} Comments</span>
-                            <label className="text-sm font-medium" htmlFor="comment-sort">Sort by</label>
-                            <select id="comment-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-md border px-2 py-1 text-sm">
+                            <span className="text-lg mr-5 font-bold dark:text-white">{comments.length} Comments</span>
+                            <label className="text-sm font-medium dark:text-white" htmlFor="comment-sort">Sort by</label>
+                            <select id="comment-sort" value={sort} onChange={event => setSort(event.target.value)} className="rounded-md border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white px-2 py-1 text-sm">
                                 <option value="newest">Newest</option>
                                 <option value="top">Top</option>
                             </select>

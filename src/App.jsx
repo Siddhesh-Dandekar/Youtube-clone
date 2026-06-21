@@ -1,5 +1,6 @@
 import './App.css';
 import Header from './components/header';
+import BottomNav from './components/BottomNav';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { adddata, cleardata } from './utils/credentialSlice';
@@ -37,6 +38,7 @@ function App() {
     <>
       <Header />
       <Outlet />
+      <BottomNav />
     </>
   );
 }

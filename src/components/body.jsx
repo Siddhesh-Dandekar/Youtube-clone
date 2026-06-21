@@ -79,16 +79,16 @@ function Body({ mode = 'home' }) {
     return (
         <main className="flex w-full pt-14">
             <Sidebar />
-            <section className={`${visible ? 'w-full mx-2 ml-20 xl:ml-56 overflow-hidden' : 'w-full mx-2 ml-20 overflow-hidden'}`}>
-                <div className="overflow-hidden sticky top-14 bg-white w-full h-12 flex items-center z-[2]">
-                    <ul className="flex gap-2 text-sm select-none" aria-label="Video categories">
+            <section className={`${visible ? 'w-full mx-2 sm:ml-20 xl:ml-56 overflow-hidden' : 'w-full mx-2 sm:ml-20 overflow-hidden'} pb-20 sm:pb-2`}>
+                <div className="overflow-hidden sticky top-14 bg-white dark:bg-neutral-900 w-full h-12 flex items-center z-[2]">
+                    <ul className="flex gap-2 text-sm select-none overflow-x-auto no-scrollbar" aria-label="Video categories">
                         {categories.map(item => (
                             <li key={item}>
                                 <button
                                     onClick={() => setCategory(item === 'All' ? null : item)}
                                     className={(category === item || (!category && item === 'All'))
-                                        ? "bg-black text-white cursor-pointer font-medium w-max px-2 py-1 rounded-md"
-                                        : "bg-gray-100 cursor-pointer font-medium w-max hover:bg-gray-200 px-2 py-1 rounded-md"}
+                                        ? "bg-black text-white dark:bg-white dark:text-black cursor-pointer font-medium w-max px-3 py-1 rounded-md"
+                                        : "bg-gray-100 dark:bg-neutral-800 dark:text-white cursor-pointer font-medium w-max hover:bg-gray-200 dark:hover:bg-neutral-700 px-3 py-1 rounded-md"}
                                 >
                                     {item}
                                 </button>
@@ -97,24 +97,24 @@ function Body({ mode = 'home' }) {
                     </ul>
                 </div>
                 <div className="mt-4 px-2">
-                    {mode !== 'home' || query ? <h1 className="text-xl font-semibold mb-3">{title}</h1> : null}
+                    {mode !== 'home' || query ? <h1 className="text-xl font-semibold mb-3 dark:text-white">{title}</h1> : null}
                     {error ? <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div> : null}
-                    <div id="maincontent" className={`${visible ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2' : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'}`}>
+                    <div id="maincontent" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
                         {videoData.map(x => <Content key={x._id} data={x} />)}
                     </div>
                     {!loading && !error && videoData.length === 0 ? (
-                        <div className="py-20 text-center text-gray-500">
-                            <h2 className="text-lg font-semibold text-gray-700">No videos found</h2>
+                        <div className="py-20 text-center text-gray-500 dark:text-neutral-400">
+                            <h2 className="text-lg font-semibold text-gray-700 dark:text-neutral-200">No videos found</h2>
                             <p className="text-sm">Try a different search or category.</p>
                         </div>
                     ) : null}
                     {loading ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-2" aria-label="Loading videos">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-2" aria-label="Loading videos">
                             {Array.from({ length: 6 }).map((_, index) => (
                                 <div key={index} className="animate-pulse">
-                                    <div className="aspect-video rounded-xl bg-gray-200" />
-                                    <div className="mt-3 h-4 w-4/5 rounded bg-gray-200" />
-                                    <div className="mt-2 h-3 w-2/5 rounded bg-gray-100" />
+                                    <div className="aspect-video rounded-xl bg-gray-200 dark:bg-neutral-800" />
+                                    <div className="mt-3 h-4 w-4/5 rounded bg-gray-200 dark:bg-neutral-800" />
+                                    <div className="mt-2 h-3 w-2/5 rounded bg-gray-100 dark:bg-neutral-800" />
                                 </div>
                             ))}
                         </div>

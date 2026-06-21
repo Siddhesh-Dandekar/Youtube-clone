@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBars, faMicrophone, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faBars, faMicrophone, faVideo, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import { cleardata } from "../utils/credentialSlice.js";
 import { clearinfo, searchinfo } from "../utils/searchSlice.js";
 import { apiFetch, clearToken } from "../utils/api.js";
 import { relativeDate } from "../utils/format.js";
+import { getInitialTheme, toggleTheme } from "../utils/theme.js";
 
 function Header() {
     const navigate = useNavigate();
@@ -25,6 +26,11 @@ function Header() {
     const [profileUrl, setProfileUrl] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const [theme, setTheme] = useState(() => getInitialTheme());
+
+    function handleToggleTheme() {
+        setTheme(prev => toggleTheme(prev));
+    }
 
     function togglesmenu() {
         dispatch(changeState());
@@ -120,10 +126,10 @@ function Header() {
     }
 
     return <>
-        <header className="w-full select-none h-14 fixed z-10 bg-white">
+        <header className="w-full select-none h-14 fixed z-10 bg-white dark:bg-neutral-900 dark:border-b dark:border-neutral-800">
             <nav className="px-4 gap-2 flex justify-between h-full items-center" aria-label="Primary">
                 <div className="flex gap-1 items-center flex-grow">
-                    <button aria-label="Toggle sidebar" onClick={togglesmenu} className="h-10 w-10 rounded-full hover:bg-gray-200">
+                    <button aria-label="Toggle sidebar" onClick={togglesmenu} className="h-10 w-10 rounded-full hover:bg-gray-200 dark:hover:bg-neutral-800 dark:text-white">
                         <FontAwesomeIcon icon={faBars} />
                     </button>
                     <Link to="/" aria-label="YouTube home">
@@ -136,7 +142,7 @@ function Header() {
                         <input
                             onChange={(e) => setSearchBar(e.target.value)}
                             type="search"
-                            className="border-gray-300 relative rounded-s-full px-2 sm:px-4 border w-full"
+                            className="border-gray-300 dark:border-neutral-700 dark:bg-neutral-900 dark:text-white relative rounded-s-full px-2 sm:px-4 border w-full"
                             placeholder="Search"
                             value={searchbar}
                             aria-label="Search videos"
@@ -146,11 +152,11 @@ function Header() {
                                 <img width="30" height="30" src="https://img.icons8.com/ios/30/multiply.png" alt="" />
                             </button>
                         ) : null}
-                        <button type="submit" className="border-gray-300 border px-1 sm:px-3 rounded-e-full hover:bg-gray-200" aria-label="Search">
+                        <button type="submit" className="border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white border px-1 sm:px-3 rounded-e-full hover:bg-gray-200 dark:hover:bg-neutral-700" aria-label="Search">
                             <FontAwesomeIcon className="rounded-full p-2" icon={faMagnifyingGlass} />
                         </button>
                     </div>
-                    <button type="button" aria-label="Voice search coming soon" className="h-10 w-10 hidden sm:block rounded-full bg-gray-100 hover:bg-gray-200">
+                    <button type="button" aria-label="Voice search coming soon" className="h-10 w-10 hidden sm:block rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white">
                         <FontAwesomeIcon icon={faMicrophone} />
                     </button>
                 </form>
@@ -158,10 +164,10 @@ function Header() {
                     {userinfo.validuser ? <>
                         {channelDetails ? (
                             <Link className="flex" to='/channel/studio' aria-label="Open studio">
-                                <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 p-3" icon={faVideo} />
+                                <FontAwesomeIcon className="h-4 w-4 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white p-3" icon={faVideo} />
                             </Link>
                         ) : null}
-                        <button onClick={toggleNotifications} className="relative h-10 w-10 hidden sm:flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200" aria-label="Notifications">
+                        <button onClick={toggleNotifications} className="relative h-10 w-10 hidden sm:flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:text-white" aria-label="Notifications">
                             <FontAwesomeIcon icon={faBell} />
                             {notifications.unread ? <span className="absolute -right-1 -top-1 rounded-full bg-red-600 px-1.5 text-[0.65rem] text-white">{notifications.unread}</span> : null}
                         </button>
@@ -187,7 +193,7 @@ function Header() {
         ) : null}
 
         {notificationOpen ? (
-            <div className="fixed right-14 top-14 z-20 w-80 rounded-md border border-gray-100 bg-white p-3 text-sm shadow-md">
+            <div className="fixed right-14 top-14 z-20 w-80 rounded-md border border-gray-100 bg-white p-3 text-sm shadow-md dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
                 <div className="mb-2 flex items-center justify-between">
                     <h2 className="font-semibold">Notifications</h2>
                     <button className="text-xs text-blue-600" onClick={loadNotifications}>Refresh</button>
@@ -197,7 +203,7 @@ function Header() {
                         <button
                             key={item._id}
                             onClick={() => markRead(item._id)}
-                            className={`mb-2 w-full rounded-md p-2 text-left hover:bg-gray-100 ${item.read ? 'text-gray-500' : 'bg-gray-50 font-medium'}`}
+                            className={`mb-2 w-full rounded-md p-2 text-left hover:bg-gray-100 dark:hover:bg-neutral-800 ${item.read ? 'text-gray-500 dark:text-neutral-500' : 'bg-gray-50 dark:bg-neutral-800 font-medium'}`}
                         >
                             <span className="block">{item.message}</span>
                             <span className="text-xs text-gray-500">{relativeDate(item.createdAt)}</span>
@@ -208,7 +214,7 @@ function Header() {
         ) : null}
 
         {profileModel ? (
-            <div className="bg-white rounded-md pt-4 pb-2 shadow-md border flex flex-col gap-2 text-sm border-gray-100 fixed z-20 right-16 top-2">
+            <div className="bg-white rounded-md pt-4 pb-2 shadow-md border flex flex-col gap-2 text-sm border-gray-100 fixed z-20 right-16 top-2 dark:bg-neutral-900 dark:border-neutral-800 dark:text-white">
                 {userinfo.channelId ? (
                     <div className="flex px-3 gap-3 mr-8">
                         <img src={channelDetails ? channelDetails.channelProfile : "https://img.icons8.com/color/32/test-account.png"} className="rounded-full" height="34" width="34" alt="Channel avatar" />
@@ -229,22 +235,29 @@ function Header() {
                         </div>
                     </div>
                 )}
-                <div className="w-full border-t-2 border-gray-200 border-solid" />
-                <Link to="/account" className="flex px-3 p-2 hover:bg-gray-100">Google Account</Link>
-                <button onClick={signOut} className="flex px-3 p-2 cursor-pointer hover:bg-gray-100 text-left">Sign out</button>
-                <div className="w-full border-t-2 border-gray-200 border-solid" />
-                <Link to="/channel/studio" className="flex px-3 p-2 hover:bg-gray-100">Youtube Studio</Link>
-                <Link to="/subscriptions" className="flex px-3 p-2 hover:bg-gray-100">Memberships</Link>
-                <div className="w-full border-t-2 border-gray-200 border-solid" />
-                <Link to="/settings" className="flex px-3 p-2 hover:bg-gray-100">Settings</Link>
-                <Link to="/help" className="flex px-3 p-2 hover:bg-gray-100">Help</Link>
-                <Link to="/feedback" className="flex px-3 p-2 hover:bg-gray-100">Feedback</Link>
+                <div className="w-full border-t-2 border-gray-200 dark:border-neutral-800 border-solid" />
+                <Link to="/account" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Google Account</Link>
+                <button onClick={signOut} className="flex px-3 p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800 text-left">Sign out</button>
+                <div className="w-full border-t-2 border-gray-200 dark:border-neutral-800 border-solid" />
+                <Link to="/channel/studio" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Youtube Studio</Link>
+                <Link to="/subscriptions" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Memberships</Link>
+                <div className="w-full border-t-2 border-gray-200 dark:border-neutral-800 border-solid" />
+                <button onClick={handleToggleTheme} className="flex items-center justify-between px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 text-left">
+                    <span className="flex items-center gap-2">
+                        <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
+                        Appearance
+                    </span>
+                    <span className="text-xs text-gray-500 dark:text-neutral-400">{theme === 'dark' ? 'Dark' : 'Light'}</span>
+                </button>
+                <Link to="/settings" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Settings</Link>
+                <Link to="/help" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Help</Link>
+                <Link to="/feedback" className="flex px-3 p-2 hover:bg-gray-100 dark:hover:bg-neutral-800">Feedback</Link>
             </div>
         ) : null}
 
         {createchannelmodel ? (
             <div className="w-full z-[19] bg-transparent p-3 md:p-14 fixed h-full top-4 left-0 right-0">
-                <div className="bg-white flex justify-between flex-col w-full h-full no-scrollbar overflow-scroll px-2 md:px-10 py-2 md:py-8 rounded-2xl shadow-lg border border-gray-300">
+                <div className="bg-white dark:bg-neutral-900 dark:text-white flex justify-between flex-col w-full h-full no-scrollbar overflow-scroll px-2 md:px-10 py-2 md:py-8 rounded-2xl shadow-lg border border-gray-300 dark:border-neutral-800">
                     <div className="text-2xl md:text-4xl font-bold">
                         <h1>How you'll appear</h1>
                     </div>

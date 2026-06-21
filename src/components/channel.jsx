@@ -111,13 +111,13 @@ function Channel() {
                     <img className="rounded-full h-fit w-32 sm:w-40" src={channelDetails.channelProfile} alt={`${channelDetails.channelName} avatar`} />
                 </div>
                 <div className="flex flex-col justify-center gap-1 sm:gap-3 ml-2">
-                    <h1 className="text-lg sm:text-2xl md:text-4xl font-semibold">{channelDetails.channelName}</h1>
-                    <h2 className="text-xs font-medium">@{channelDetails.channelName.toLowerCase().split(' ')[0]} <span className="text-gray-500">- {compactNumber(channelDetails.subscribers)} subscribers - {channelVideos.length} videos</span></h2>
+                    <h1 className="text-lg sm:text-2xl md:text-4xl font-semibold dark:text-white">{channelDetails.channelName}{channelDetails.verified ? <span className="ml-2 text-xs align-middle text-gray-500 dark:text-neutral-400" title="Verified">✓</span> : null}</h1>
+                    <h2 className="text-xs font-medium">@{channelDetails.channelName.toLowerCase().split(' ')[0]} <span className="text-gray-500">· {compactNumber(channelDetails.subscribers)} subscribers · {channelVideos.length} videos</span></h2>
                     <span className="text-[0.6rem] sm:text-xs text-gray-600">{channelDetails.description || 'More about this channel'}</span>
                     {ownChannel ? (
                         <Link to="/channel/studio"><button className="w-fit bg-gray-200 font-semibold text-xs sm:text-sm py-2 px-2 sm:px-4 rounded-full">Customize Channel</button></Link>
                     ) : (
-                        <button onClick={handleSubscribe} className={`w-fit text-xs sm:text-sm py-2 px-4 rounded-full ${subscribed ? 'bg-gray-200 text-black' : 'bg-black text-white'}`}>
+                        <button onClick={handleSubscribe} className={`w-fit text-xs sm:text-sm font-medium py-2 px-4 rounded-full ${subscribed ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-red-600 text-white hover:bg-red-700'}`}>
                             {subscribed ? 'Subscribed' : 'Subscribe'}
                         </button>
                     )}
@@ -128,7 +128,7 @@ function Channel() {
                     <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`hover:text-black border-b-2 py-2 ${activeTab === tab ? 'border-black text-black' : 'border-transparent'}`}
+                        className={`hover:text-black dark:hover:text-white border-b-2 py-2 ${activeTab === tab ? 'border-black text-black dark:border-white dark:text-white' : 'border-transparent'}`}
                         role="tab"
                         aria-selected={activeTab === tab}
                     >
@@ -136,7 +136,7 @@ function Channel() {
                     </button>
                 ))}
             </div>
-            <div className="w-full border-t-2 border-gray-200 border-solid" />
+            <div className="w-full border-t-2 border-gray-200 dark:border-neutral-800 border-solid" />
             {['Live', 'Playlists', 'Community'].includes(activeTab) ? (
                 <div className="py-16 text-center text-gray-500">
                     <h2 className="text-lg font-semibold text-gray-700">{activeTab}</h2>

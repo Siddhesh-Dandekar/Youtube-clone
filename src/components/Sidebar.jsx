@@ -2,8 +2,8 @@ import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const navClass = ({ isActive }) =>
-  `h-10 px-2 flex items-center rounded-lg hover:bg-gray-100 ${
-    isActive ? 'bg-gray-100 font-semibold' : 'font-medium'
+  `h-10 px-2 flex items-center rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 dark:text-white ${
+    isActive ? 'bg-gray-100 dark:bg-neutral-800 font-semibold' : 'font-medium'
   }`;
 
 function HomeIcon({ className = '' }) {
@@ -31,18 +31,18 @@ function Sidebar() {
 
   if (!visible) {
     return (
-      <aside className="w-20 gap-5 fixed bg-white flex text-[0.6rem] flex-col items-center pt-2 list-none">
-        <NavLink to="/" className="px-2 gap-1 flex flex-col items-center rounded-lg">
+      <aside className="hidden sm:flex w-20 gap-5 fixed bg-white dark:bg-neutral-900 text-[0.6rem] flex-col items-center pt-2 list-none dark:text-white">
+        <NavLink to="/" className="px-2 gap-1 flex flex-col items-center rounded-lg dark:hover:bg-neutral-800">
           <HomeIcon />
           <span className="font-medium">Home</span>
         </NavLink>
-        <NavLink to="/shorts" className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100">
+        <NavLink to="/shorts" className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800">
           <ShortsIcon />
           <span className="font-medium">Shorts</span>
         </NavLink>
         <NavLink
           to="/subscriptions"
-          className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100"
+          className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800"
         >
           <IconImage
             className=""
@@ -51,7 +51,7 @@ function Sidebar() {
           />
           <span className="font-medium">Subscriptions</span>
         </NavLink>
-        <NavLink to="/library/history" className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100">
+        <NavLink to="/library/history" className="h-10 px-2 gap-1 flex flex-col items-center rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800">
           <IconImage className="" src="https://img.icons8.com/small/20/user-male-circle.png" alt="You" />
           <span className="font-medium">You</span>
         </NavLink>
@@ -60,7 +60,7 @@ function Sidebar() {
   }
 
   return (
-    <aside className="w-56 fixed bg-white h-screen z-10 flex text-[0.8rem] flex-col px-4 pt-2 list-none">
+    <aside className="hidden sm:flex w-56 fixed bg-white dark:bg-neutral-900 h-screen z-10 text-[0.8rem] flex-col px-4 pt-2 list-none dark:text-white">
       <NavLink to="/" className={navClass}>
         <HomeIcon className="mr-5" />
         <span>Home</span>
@@ -74,9 +74,9 @@ function Sidebar() {
         <span>Subscriptions</span>
       </NavLink>
 
-      <div className="w-full my-2 border-t-2 border-gray-200 border-solid" />
+      <div className="w-full my-2 border-t-2 border-gray-200 dark:border-neutral-800 border-solid" />
 
-      <Link to="/library/history" className="h-10 px-2 flex items-center rounded-lg hover:bg-gray-200">
+      <Link to="/library/history" className="h-10 px-2 flex items-center rounded-lg hover:bg-gray-200 dark:hover:bg-neutral-800">
         <span className="text-base font-medium mr-2">You</span>
         <img width="16" height="16" src="https://img.icons8.com/small/16/forward.png" alt="" />
       </Link>
@@ -109,7 +109,7 @@ function Sidebar() {
         <span>Your clips</span>
       </NavLink>
 
-      <div className="w-full my-2 border-t-2 border-gray-200 border-solid" />
+      <div className="w-full my-2 border-t-2 border-gray-200 dark:border-neutral-800 border-solid" />
     </aside>
   );
 }
