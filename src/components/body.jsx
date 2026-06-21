@@ -79,7 +79,7 @@ function Body({ mode = 'home' }) {
     return (
         <main className="flex w-full pt-14">
             <Sidebar />
-            <section className={`${visible ? 'w-full mx-2 sm:ml-20 xl:ml-56 overflow-hidden' : 'w-full mx-2 sm:ml-20 overflow-hidden'} pb-20 sm:pb-2`}>
+            <section className={`${visible ? 'w-full mx-2 sm:ml-56' : 'w-full mx-2 sm:ml-20'} pb-20 sm:pb-2`}>
                 <div className="overflow-hidden sticky top-14 bg-white dark:bg-neutral-900 w-full h-12 flex items-center z-[2]">
                     <ul className="flex gap-2 text-sm select-none overflow-x-auto no-scrollbar" aria-label="Video categories">
                         {categories.map(item => (

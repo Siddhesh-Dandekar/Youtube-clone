@@ -90,7 +90,7 @@ function LibraryPage({ section: forcedSection }) {
   return (
     <main className="flex w-full pt-14 pb-20 sm:pb-4">
       <Sidebar />
-      <section className={`${visible ? 'w-full mx-4 sm:ml-20 xl:ml-56' : 'w-full mx-4 sm:ml-20'} py-4`}>
+      <section className={`${visible ? 'w-full mx-4 sm:ml-56' : 'w-full mx-4 sm:ml-20'} py-4`}>
         {(message || error) ? <div className={`mb-4 rounded-md border p-3 text-sm ${error ? 'border-red-200 bg-red-50 text-red-700' : 'border-green-200 bg-green-50 text-green-700'}`}>{error || message}</div> : null}
         <div className="mb-4 flex items-center justify-between">
           <h1 className="text-2xl font-semibold dark:text-white">{titles[section] || 'Library'}</h1>
