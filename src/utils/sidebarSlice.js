@@ -8,16 +8,12 @@ const sidebarSlice = createSlice({
         visible: true
     },
     reducers:{
-        changeState: (state, action)=>{
+        changeState: (state)=>{
             state.visible = !state.visible;
-        },
-        fetchState: (state, action)=> {
-            const result = state.visible.find(x => x);
-            return result;
         }
     }
 })
 
 export default sidebarSlice.reducer;
 
-export const {changeState, fetchState} = sidebarSlice.actions;
+export const {changeState} = sidebarSlice.actions;

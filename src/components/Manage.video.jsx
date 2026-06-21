@@ -22,7 +22,7 @@ function ManageVideos(props) {
             </Link>
             <div className='flex flex-col gap-1 '>
                 <h1 className="text-sm sm:text-base font-medium">{title}</h1>
-                <span className="text-xs font-medium text-gray-500">{views} views • 2 weeks ago</span>
+                <span className="text-xs font-medium text-gray-500">{views} views - 2 weeks ago</span>
             </div>
             <div className='flex justify-around font-medium gap-1'>
                 <div onClick={() => setEditModel(true)} className='bg-gray-100 cursor-pointer flex border border-gray-200 items-center justify-center gap-2 hover:bg-gray-200 w-full py-1 rounded-sm'>

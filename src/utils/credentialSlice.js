@@ -1,22 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const emptyUser = {
+    _id: null,
+    username: null,
+    email: null,
+    validuser: false,
+    avatar: null,
+    channelId: null,
+    emailVerified: false,
+    subscribedChannels: [],
+    likedVideos: [],
+    watchLater: []
+};
 
 //Creating a Slice in which user Credentials will be Stored, fetched and Cleared
 const CredentialSlice = createSlice({
     name: 'credential',
     initialState: {
-        data: [{
-            _id: null,
-            username: null,
-            email: null,
-            validuser: false,
-            avatar: null,
-            channelId: null
-        }]
+        data: [{ ...emptyUser }]
     },
     reducers: {
         adddata: (state, action) => {
-            const { _id, username, email, validuser, avatar, channelId} = action.payload.user;
+            const { _id, username, email, validuser, avatar, channelId, emailVerified, subscribedChannels, likedVideos, watchLater } = action.payload.user;
             const updatedata = state.data.find(x => x);
             updatedata._id = _id;
             updatedata.username = username;
@@ -24,21 +29,19 @@ const CredentialSlice = createSlice({
             updatedata.validuser = validuser;
             updatedata.avatar = avatar;
             updatedata.channelId = channelId;
+            updatedata.emailVerified = Boolean(emailVerified);
+            updatedata.subscribedChannels = subscribedChannels || [];
+            updatedata.likedVideos = likedVideos || [];
+            updatedata.watchLater = watchLater || [];
 
         },
-        fetchdata: (state, action) => {
-            const result = state.data.find(x => x);
-        },
-        cleardata: (state, action)=>{
-            const deletedata = state.data.find(x => x);
-            for(let key in deletedata){
-                deletedata[key] = null
-            }
+        cleardata: (state)=>{
+            state.data[0] = { ...emptyUser };
         }
     }
 })
 
 export default CredentialSlice.reducer;
 
-export const { adddata, fetchdata , cleardata} = CredentialSlice.actions;
+export const { adddata, cleardata} = CredentialSlice.actions;
 

@@ -1,28 +1,21 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { compactNumber, relativeDate } from '../utils/format';
 
-//this component is used to display Videos Related to That Channel
-function ChannelVideos(props) {
-    const {title, views , thumbnailUrl, _id} = props.data;
-    const [videotitle , setVideoTitle] = useState(title);
+function ChannelVideos({ data }) {
+    const { title, views, thumbnailUrl, _id, uploadDate } = data;
+    const videotitle = title.length > 65 ? `${title.slice(0, 62)}...` : title;
 
-    //To limit the videoTitle Length so it won't Affect the UI 
-    if(videotitle.length > 65){
-        const UpdatedTitle = videotitle.slice(0, 60)+'...'
-        setVideoTitle(UpdatedTitle)
-    }
-    return (<>
-        <Link to={`/watch/${_id}`}>
-        <div className=" flex flex-col gap-2">
+    return (
+        <Link to={`/watch/${_id}`} className="flex flex-col gap-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
             <div className="rounded-lg overflow-hidden">
-                <img src={thumbnailUrl} className='aspect-video' alt="" />
+                <img src={thumbnailUrl} className="aspect-video bg-gray-100" alt={`${title} thumbnail`} loading="lazy" />
             </div>
             <div>
                 <h1 className="text-xs sm:text-base font-medium">{videotitle}</h1>
-                <span className="text-xs font-medium text-gray-500">{views} views • 2 weeks ago</span>
+                <span className="text-xs font-medium text-gray-500">{compactNumber(views)} views - {relativeDate(uploadDate)}</span>
             </div>
-        </div></Link>
-    </>)
+        </Link>
+    );
 }
 
 export default ChannelVideos;

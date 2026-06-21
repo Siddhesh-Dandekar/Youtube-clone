@@ -1,14 +1,17 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { data, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ManageVideos from "./Manage.video";
 import CreateChannel from "./createChannel";
+import { apiFetch } from "../utils/api";
 
 function Studio() {
     const [channelPage, setChannelPage] = useState(true);
     const [videoPage, setVideoPage] = useState(false);
     const [manageVideo, setManageVideo] = useState(false)
     const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
 
 
     //Uploading Video
@@ -32,25 +35,25 @@ function Studio() {
 
     //Fetching channel and videos information at first load and after updating 
     useEffect(() => {
+        let active = true;
         const ChannelFetch = async () => {
-            const channelInfo = await fetch(`${import.meta.env.VITE_API_URL}/channel/${UserInfo.channelId}`).then(data => data.json());
-            setChannelDetails(channelInfo);
-            const updatedVideos = [];
-            if (channelInfo.videos) {
-                for (let x of channelInfo.videos) {
-                    try {
-                        const videoData = await fetch(`${import.meta.env.VITE_API_URL}/video/${x}`).then(data => data.json());
-                        updatedVideos.push(videoData);
-                    }
-                    catch (err) {
-
-                    }
-
-                }
+            if (!UserInfo.channelId) return;
+            try {
+                const [channelInfo, videos] = await Promise.all([
+                    apiFetch(`/channel/${UserInfo.channelId}`),
+                    apiFetch(`/channel/${UserInfo.channelId}/videos`)
+                ]);
+                if (!active) return;
+                setChannelDetails(channelInfo);
+                setChannelVideos(videos);
+            } catch (err) {
+                if (active) setError(err.message);
             }
-            setChannelVideos(updatedVideos);
         }
         ChannelFetch();
+        return () => {
+            active = false;
+        };
     }, [UserInfo, loading]);
 
     const accessToken = localStorage.getItem('key');
@@ -60,25 +63,19 @@ function Studio() {
         event.preventDefault();
         try {
             setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-            }, 5000);
             if (accessToken && accessToken !== undefined) {
-                const uploadVideo = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
+                const uploadVideo = await apiFetch(`/upload`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${accessToken}`
-                    },
-                    body: JSON.stringify({
+                    auth: true,
+                    body: {
                         title: videoTitle,
                         videoUrl: videoUrl,
                         thumbnailUrl: thumbnailUrl,
                         description: description
-                    })
-                }).then(data => data.json());
+                    }
+                });
                 if (uploadVideo) {
-                    alert('Video Uploaded Successfully');
+                    setMessage('Video saved successfully.');
                 }
                 setVideoTitle('');
                 setVideoUrl('');
@@ -87,7 +84,9 @@ function Studio() {
             }
         }
         catch (err) {
-            alert(err.message);
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
 
     }
@@ -97,60 +96,47 @@ function Studio() {
         event.preventDefault();
         try {
             setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-            }, 5000);
             if (updaterequest == "Name" && accessToken) {
-                const updateChannelInfo = await fetch(`${import.meta.env.VITE_API_URL}/channel/update`, {
+                await apiFetch(`/channel/update`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${accessToken}`
-                    },
-                    body: JSON.stringify({
+                    auth: true,
+                    body: {
                         channelName: updateName
-                    })
-                }).then(data => data.json())
+                    }
+                })
             }
             if (updaterequest == "Banner" && accessToken) {
-                const updateChannelInfo = await fetch(`${import.meta.env.VITE_API_URL}/channel/update`, {
+                await apiFetch(`/channel/update`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${accessToken}`
-                    },
-                    body: JSON.stringify({
+                    auth: true,
+                    body: {
                         channelBanner: updateBanner
-                    })
-                }).then(data => data.json())
+                    }
+                })
             }
             if (updaterequest == "Profile" && accessToken) {
-                const updateChanneIInfo = await fetch(`${import.meta.env.VITE_API_URL}/channel/update`, {
+                await apiFetch(`/channel/update`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${accessToken}`
-                    },
-                    body: JSON.stringify({
+                    auth: true,
+                    body: {
                         channelProfile: updateProfile
-                    })
-                }).then(data => data.json())
+                    }
+                })
             }
             if (updaterequest == "Description" && accessToken) {
-                const updateChanneIInfo = await fetch(`${import.meta.env.VITE_API_URL}/channel/update`, {
+                await apiFetch(`/channel/update`, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${accessToken}`
-                    },
-                    body: JSON.stringify({
+                    auth: true,
+                    body: {
                         description: updateDescription
-                    })
-                }).then(data => data.json())
+                    }
+                })
             }
-
+            setMessage('Channel updated.');
         } catch (err) {
-            alert(err.message)
+            setError(err.message)
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -158,60 +144,55 @@ function Studio() {
     async function deleteVideo(id) {
         try {
             setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-            }, 5000);
             if (accessToken && accessToken !== undefined) {
-                const DeleteVideo = await fetch(`${import.meta.env.VITE_API_URL}/video/delete`, {
+                await apiFetch(`/video/delete`, {
                     method: "DELETE",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${accessToken}`
-                    },
-                    body: JSON.stringify({
+                    auth: true,
+                    body: {
                         videoid: id,
                         channelid: channelDetails._id
-                    })
-                }).then(data => data.json());
-
+                    }
+                });
+                setChannelVideos(prev => prev.filter(video => video._id !== id));
+                setMessage('Video deleted.');
             }
         } catch (err) {
-            return console.log(err.message)
+            setError(err.message)
+        } finally {
+            setLoading(false);
         }
     }
     
     //This function allows user to Edit Videos
     async function editVideo(event, obj) {
         const { _id, editTitle, editThumbnailUrl, editDescription } = obj;
-        console.log(_id)
         event.preventDefault();
         try {
             setLoading(true);
-            setTimeout(() => {
-                setLoading(false);
-            }, 3000);
             if (accessToken && accessToken !== undefined) {
-                const EditVideo = await fetch(`${import.meta.env.VITE_API_URL}/video/edit`, {
+                const EditVideo = await apiFetch(`/video/edit`, {
                     method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `JWT ${accessToken}`
-                    },
-                    body: JSON.stringify({
+                    auth: true,
+                    body: {
                         videoid: _id,
                         title: editTitle,
                         thumbnailUrl: editThumbnailUrl,
                         description: editDescription
-                    })
-                }).then(data => data.json());
+                    }
+                });
+                setChannelVideos(prev => prev.map(video => video._id === _id ? EditVideo : video));
+                setMessage('Video updated.');
             }
         } catch (err) {
-            console.log(err.message)
+            setError(err.message)
+        } finally {
+            setLoading(false);
         }
     }
     return (<>
         {/* {UserInfo.validuser ?  : } */}
 
+        {(message || error) ? <div className={`fixed right-4 top-16 z-30 rounded-md border p-3 text-sm shadow ${error ? 'border-red-200 bg-red-50 text-red-700' : 'border-green-200 bg-green-50 text-green-700'}`}>{error || message}</div> : null}
         {UserInfo.validuser ? (UserInfo.channelId ? <main className="flex w-full min-h-screen pt-14 ">
             {visiblestatus.visible ? <div className="w-56 fixed bg-white h-screen z-10  flex text-[0.8rem] flex-col px-4 pt-2 list-none">
                 <div className="flex flex-col py-2 items-center px-2">

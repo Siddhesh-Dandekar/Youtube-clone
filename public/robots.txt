@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://youtube-clone-steel-kappa-82.vercel.app/sitemap.xml

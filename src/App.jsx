@@ -1,54 +1,44 @@
-import './App.css'
+import './App.css';
 import Header from './components/header';
-import { Outlet , useLocation } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { adddata, cleardata, fetchdata } from './utils/credentialSlice'
-import { useSelector } from 'react-redux';
+import { adddata, cleardata } from './utils/credentialSlice';
 import { useEffect } from 'react';
+import { apiFetch, clearToken, getToken } from './utils/api';
 
 function App() {
-  
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const location = useLocation();
 
-  //Redux Store is used to store User Details After Validating accessToken by server Side And maintaining that data across all Pages
   useEffect(() => {
+    let active = true;
     async function userValidation() {
       try {
-        console.log('hello');
-        const accessToken = localStorage.getItem('key'); // make sure to retrieve the accessToken
-        if (accessToken !== "undefined" && accessToken) {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/validuser`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `JWT ${accessToken}`
-            }
-          });
-          const data = await response.json();
-          if (!data.email) {
-            throw new Error(data.message)
-          }
+        if (getToken()) {
+          const data = await apiFetch('/validuser', { auth: true });
+          if (!active) return;
           const user = { ...data, validuser: true };
           dispatch(adddata({ user }));
         } else {
           dispatch(cleardata());
         }
-      } catch (error) {
-        console.error('Error validating user:', error.message);
-        localStorage.removeItem('key')
-        dispatch(cleardata());
+      } catch {
+        clearToken();
+        if (active) dispatch(cleardata());
       }
     }
-    userValidation()
-  },[location.pathname])
+    userValidation();
+    return () => {
+      active = false;
+    };
+  }, [location.pathname, dispatch]);
 
   return (
     <>
       <Header />
       <Outlet />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

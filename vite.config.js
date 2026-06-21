@@ -7,4 +7,9 @@ export default defineConfig({
   esbuild: {
     drop: ['console', 'debugger'],
   },
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
+    exclude: ['node_modules/**', 'dist/**', 'backend/**'],
+  },
 })
